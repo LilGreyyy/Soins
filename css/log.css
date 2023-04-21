@@ -1,123 +1,357 @@
-:root {
-    --link-color: #6C4BB4;
-    --primary-color-opacity: #e9d5ff;
-    --white-shade: #f0f8ff;
-    --secondary-color: #1e293b;
-    --primary-padding: 8px;
-    --pilled-shape-radius: 40px;
-    --color1: #36EB84;
-    --color2: #2BCDB5;
-    --primary-gradient: linear-gradient(to right, var(--color2), var(--color1))
-}
-
-body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: sans-serif;
-    background: linear-gradient(to right, #1e293b, #434343);
-}
-
-.container {
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px #353636;
-    background: #fff;
-}
-
-.item-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.log-in {
-    font-size: 35px;
-    color: var(--secondary-color);
-}
-
-.log-in::after {
-    content: "";
-    display: block;
-    width: 60%;
-    height: 3px;
-    margin-top: 8px;
-    background: var(--primary-gradient);
-    margin-inline: auto;
-}
-
-.form-input {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-input[type="text"],
-input[type="password"] {
-    padding: var(--primary-padding);
-    width: 300px;
-    border-radius: var(--pilled-shape-radius);
+@import url('https://fonts.googleapis.com/css?family=Lato:100,300,400');
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+form .login .group input[type="text"],
+form .login .group input[type="password"] {
+    width: 100%;
     border: none;
-    background: #E7FDF0;
-    color: var(--secondary-color);
-    outline: none;
-    border: 1px solid transparent;
+    color: #aaabb0;
+    padding: 14px 10px 14px 45px;
+    margin-top: 20px;
+    background: #33374a;
+    z-index: 2;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    position: relative;
 }
 
-@media only screen and (max-width: 300px) {
-    input[type="text"],
-    input[type="password"] {
-        width: 200px;
+form .login .group input[type="text"]:focus+label::before,
+form .login .group input[type="password"]:focus+label::before {
+    width: 100%;
+}
+
+form .register .group input[type="text"],
+form .register .group input[type="password"] {
+    width: 100%;
+    border: none;
+    color: #ffffff;
+    padding: 14px 10px 14px 45px;
+    margin-top: 20px;
+    background: rgb(233, 158, 156);
+    z-index: 2;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+form .register .group input[type="text"]::placeholder,
+form .register .group input[type="password"]::placeholder {
+    color: #ffffff;
+}
+
+form .register .group input[type="text"]:focus+label::before,
+form .register .group input[type="password"]:focus+label::before {
+    width: 100%;
+}
+
+.panel .login button[type="submit"],
+.panel .register button[type="submit"] {
+    align-self: flex-start;
+    margin-top: 20px;
+    padding: 10px 0;
+    width: 150px;
+    background: transparent;
+    border-radius: 0 50px 50px 0;
+    border-left: none !important;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.msg {
+    border: 2px solid #deb6b4;
+    padding: 2px 15px 2px 15px;
+    border-radius: 5px;
+}
+
+@keyframes loginOpen {
+    0% {
+        transform: translateX(140px);
+    }
+    50% {
+        transform: translateX(-145px);
+    }
+    100% {
+        transform: translateX(140px);
+        z-index: -1;
     }
 }
 
-input[type="text"]:focus-visible,
-input[type="password"]:focus-visible {
-    border: 1px solid var(--color1);
-    background: transparent;
+@keyframes registerOpen {
+    0% {
+        transform: translateX(-140px);
+    }
+    50% {
+        transform: translateX(145px);
+    }
+    100% {
+        transform: translateX(-140px);
+    }
 }
 
-.label {
-    color: var(--secondary-color);
-    margin-bottom: 3px;
+@keyframes loginClose {
+    0% {
+        transform: translateX(140px);
+        z-index: -1;
+    }
+    50% {
+        transform: translateX(-145px);
+    }
+    100% {
+        transform: translateX(140px);
+        z-index: 1;
+    }
 }
 
-.display-space-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0 10px 0;
+@keyframes registerClose {
+    0% {
+        transform: translateX(-140px);
+    }
+    50% {
+        transform: translateX(145px);
+    }
+    100% {
+        transform: translateX(-140px);
+    }
 }
 
-.item-container button {
-    border-radius: 50%;
-    border: none;
-    padding: 5px;
-    background: transparent;
-    margin-left: 20px;
+* {
+    box-sizing: border-box;
+}
+
+input {
+    outline: none;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 2px 2px 5px #353636;
+    height: 100vh;
+    font-family: 'Lato', sans-serif;
+    color: #aaabb0;
 }
 
-button[type="submit"] {
+.bg {
     width: 100%;
-    padding: var(--primary-padding);
-    border-radius: var(--pilled-shape-radius);
-    border: none;
-    background: var(--primary-gradient);
-    color: var(--white-shade);
-    margin: 10px 0 10px 0;
+    height: 50vh;
+    background: #f1f1f1;
+    position: absolute;
+    top: -80px;
+    left: 0;
+    padding-bottom: 80px;
+    box-sizing: initial;
+    z-index: -1;
+    transform: skewY(5deg);
 }
 
-.chekbox-label {
-    font-size: 14px;
+.panel {
+    width: 640px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-a {
-    text-decoration: none;
-    color: var(--link-color);
-    font-size: 14px;
+.panel .login {
+    width: 300px;
+    height: 380px;
+    background: #292c3b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transform: translateX(140px);
+    position: relative;
+    z-index: 1;
+    transition: filter 0.5s;
+}
+
+.panel .login button[type="submit"] {
+    border: rgb(233, 158, 156) solid 1px;
+    color: rgb(233, 158, 156);
+}
+
+.panel .register {
+    transform: translateX(-140px);
+    position: relative;
+}
+
+.panel .register .button-open,
+.panel .register .button-close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    transition: transform 0.4s;
+    z-index: 9;
+}
+
+.panel .register .button-open::before,
+.panel .register .button-close::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: #ffffff;
+    left: 10px;
+}
+
+.panel .register .button-open::after,
+.panel .register .button-close::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: #ffffff;
+    left: 10px;
+    transform: rotate(90deg);
+}
+
+.panel .register .inner {
+    filter: blur(5px);
+    background: #b47876;
+    box-shadow: 5px 14px 20px 0 #f68b88;
+    width: 100%;
+    width: 340px;
+    height: 440px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: filter 0.5s;
+}
+
+.panel .register button[type="submit"] {
+    border: #ffffff solid 1px;
+    color: #ffffff;
+}
+
+.register h1 {
+    text-align: center;
+    font-weight: 100;
+    letter-spacing: 2px;
+    margin-top: 0;
+    color: #ffffff;
+}
+
+.register .group {
+    width: 100%;
+    position: relative;
+}
+
+.register .group i {
+    color: #ffffff;
+    position: absolute;
+    top: 36px;
+    left: 15px;
+    z-index: 3;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.register .group label {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    z-index: 1;
+    background: #b47876;
+    top: 19px;
+}
+
+.register .group label::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 100%;
+    background: #b47876;
+    transition: width 0.5s;
+}
+
+.login h1 {
+    text-align: center;
+    font-weight: 100;
+    letter-spacing: 2px;
+    margin-top: 0;
+}
+
+.login .group {
+    position: relative;
+    width: 100%;
+}
+
+.login .group i {
+    color: #b47876;
+    position: absolute;
+    top: 36px;
+    left: 15px;
+    z-index: 3;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.login .group label {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    z-index: 1;
+    background: #42475f;
+    top: 19px;
+}
+
+.login .group label::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 100%;
+    background: rgb(221, 150, 148);
+    transition: width 0.5s;
+}
+
+.button-close {
+    visibility: hidden;
+}
+
+input[id="switch-open"]:checked~form .login {
+    filter: blur(5px);
+    animation: loginOpen forwards 0.8s;
+}
+
+input[id="switch-open"]:checked~form .register {
+    animation: registerOpen forwards 0.8s;
+}
+
+input[id="switch-open"]:checked~form .register>.inner {
+    filter: blur(0);
+}
+
+input[id="switch-open"]:checked~form .register .button-open {
+    visibility: hidden;
+    transform: rotate(45deg);
+}
+
+input[id="switch-open"]:checked~form .register .button-close {
+    visibility: visible;
+    transform: rotate(45deg);
+}
+
+input[id="switch-close"]:checked~form .login {
+    animation: loginClose forwards 0.8s;
+}
+
+input[id="switch-close"]:checked~form .register {
+    animation: registerClose forwards 0.8s;
+}
+
+input[id="switch-close"]:checked~form .register>.inner {
+    filter: blur(5px);
+}
+
+input[type="radio"] {
+    display: none;
 }

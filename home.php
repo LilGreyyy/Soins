@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
@@ -85,18 +86,4 @@
                 <p class="moreInfo">For more information click <a href="aboutus.php" class="someMoreInfo">here</a></p>
             </div>
         </div>
-    <footer class="home-footer">
-        <!--<li>
-            <a href="store" class="active">Store</a>
-        </li>
-        <li>
-            <a href="products" class="active">Products</a>
-        </li>
-        <li>
-            <a href="consultation">Consultations</a>
-        </li>
-        <li>
-            <a href="aboutus" class="active">About Us</a>
-        </li> -->
-    </footer>
 </body>
