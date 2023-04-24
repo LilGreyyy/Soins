@@ -8,14 +8,14 @@
 
     $result = $mysql->query("SELECT * FROM `users` WHERE `email` = '$email' AND `password` = '$password'");
     $user = $result->fetch_assoc();
-    if(count($user) == 0) {
-        echo "User not found";
-        exit();
+    
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailErr = "Invalid email format";
     }
 
-    setcookie('user', $user['email'], time() + 3600 * 24, "/");
+    setcookie('user', $user['email'], time() + 3600, "/");
 
     $mysql->close();
 
-    header('Location: ../home.php');
+    header('Location: ../authhome.php');
 ?>

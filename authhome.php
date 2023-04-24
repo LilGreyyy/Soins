@@ -28,7 +28,7 @@
                 <li>
                     <a href="profile.php" class="page-scroll">Profile</a>
                 </li>
-                <li><a href="log.php" class="page-scroll">Log In/Register</a></li>
+                <li><a href="vendor/exit.php" class="page-scroll">Sign Out</a></li>
                 
             </ul>
         </nav>  
