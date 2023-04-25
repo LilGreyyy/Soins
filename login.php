@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION["user"])) {
-   header("Location: authhome.php");
+   header("Location: home.php");
 }
 ?>
 <!DOCTYPE html>

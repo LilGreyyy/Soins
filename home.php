@@ -1,4 +1,9 @@
-
+<?php
+session_start();
+if (isset($_SESSION["user"])) {
+   header("Location: home.php");
+}
+?>
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
@@ -28,8 +33,14 @@
                 <li>
                     <a href="profile.php" class="page-scroll">Profile</a>
                 </li>
-                <li><a href="login.php" class="page-scroll">Log In</a></li>
-                <li><a href="registration.php" class="page-scroll">Register</a></li>
+                <?php if (!empty($_SESSION['user'])): ?>
+                    <li><a href="basket.php" class="page-scroll"><img src="images/basket.jpg" width="30px" height="30px"></a><li>
+                    <li><a href="vendor/exit.php" class="page-scroll">Sign Out</a></li>
+                <?php else: 
+                    echo '<li><a href="login.php" class="page-scroll">Log In</a></li>';
+                    echo '<li><a href="registration.php" class="page-scroll">Register</a></li>';
+                ?>
+                <?php endif;?>
             </ul>
         </nav>  
     </div>
