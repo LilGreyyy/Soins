@@ -1,4 +1,5 @@
-<?php 
-    setcookie('user', $user['email'], time() - 3600, "/");
-    header('Location: ../home.php');
+<?php
+session_start();
+session_destroy();
+header("Location: ../home.php");
 ?>

@@ -28,8 +28,8 @@
                 <li>
                     <a href="profile.php" class="page-scroll">Profile</a>
                 </li>
-                <li><a href="log.php" class="page-scroll">Log In/Register</a></li>
-                
+                <li><a href="login.php" class="page-scroll">Log In</a></li>
+                <li><a href="registration.php" class="page-scroll">Register</a></li>
             </ul>
         </nav>  
     </div>
