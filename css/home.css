@@ -27,7 +27,7 @@ body {
 }
 
 .main-nav {
-    background-color: whitesmoke;
+    background-color: #CDB2B9;
     box-sizing: border-box;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.75);
@@ -82,7 +82,7 @@ header {
     -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.75);
     z-index: 999;
     padding: 0 20px;
-    background-color: whitesmoke;
+    background-color: #fee7ed;
     width: 100%;
     padding-top: 70px;
     font-size: 24px;
@@ -116,13 +116,13 @@ header h1 {
     width: 100%;
     height: 430px;
     background-blend-mode: normal;
-    background-color: rgb(63, 63, 63);
+    background-color: #cea9ae;
     margin-bottom: 2px;
 }
 
 .smallContent {
     width: 190px;
-    border: 2px solid rgb(71, 112, 112);
+    border: 2px solid #6f4349;
     margin: 0px auto;
 }
 
@@ -131,19 +131,19 @@ header h1 {
 }
 
 .someContent {
-    background-color: rgba(31, 31, 31, 0.4);
+    background-color: rgba(125, 125, 125, 0.4);
 }
 
 .someContent h2 {
     font-size: 50px;
-    color: rgb(52, 83, 83);
+    color: #6f4349;
     padding-top: 170px;
 }
 
 .homeContent h3 {
     padding-top: 4px;
     font-size: 18px;
-    color: rgb(52, 83, 83);
+    color: #6f4349;
 }
 
 .afterContent {
@@ -154,9 +154,13 @@ header h1 {
 /* STORE CONTENT*/
 
 .storeContent {
-    background-color: rgb(91, 120, 120);
+    background-color: #a98b93;
     height: 520px;
     margin-bottom: 2px;
+    background-image: url(../images/bckg-wave.avif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: darken;
 }
 
 .productsimg {
@@ -164,8 +168,6 @@ header h1 {
     height: 350px;
     padding: 60px 20px 60px 20px;
 }
-
-.storeContent p {}
 
 .smth1 {
     color: rgb(204, 204, 204);
@@ -195,7 +197,7 @@ header h1 {
 
 .consContent {
     height: 500px;
-    background-color: #c5be88;
+    background-color: #CDB2B9;
     margin-bottom: 2px;
 }
 
@@ -206,11 +208,7 @@ header h1 {
     color: #302e2e;
 }
 
-.consImg {
-    grid-gap: 10%;
-}
-
-.consimg {
+.consimg img {
     width: 500px;
     height: 350px;
     padding: 1em;
@@ -228,7 +226,7 @@ header h1 {
 /* ABOUT US CONTENT*/
 
 .aboutusContent {
-    background-color: #a9a9a9;
+    background-color: #ad9298;
     height: 430px;
     background-image: url(../images/worktime.avif);
     background-size: cover;
@@ -241,7 +239,7 @@ header h1 {
 
 .workInfo {
     margin-left: 550px;
-    background-color: #979797;
+    background-color: #d6b5bc;
     width: 400px;
     opacity: 90%;
     border-radius: 50px;

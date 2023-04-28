@@ -1,0 +1,39 @@
+body {}
+
+.blnkspc {
+    height: 150px;
+}
+
+.signup-form {
+    margin: 0 auto;
+    padding: 20px;
+    width: 320px;
+    background-color: rgb(169, 216, 169);
+    border-radius: 40px;
+}
+
+input {
+    width: 250px;
+    padding-left: 15px;
+    margin-bottom: 10px;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid green;
+    padding: 5px 0px 5px 10px;
+}
+
+button {
+    border-radius: 25px;
+    outline: none;
+    text-decoration: none;
+    padding: 5px;
+    width: 100px;
+    background-color: aliceblue;
+    border: 1px solid rgb(180, 180, 180);
+}
+
+.error {
+    padding: 5px;
+    background-color: rgb(150, 156, 156);
+    color: rgb(117, 17, 17);
+}

@@ -1,49 +1,6 @@
 <?php
-session_start();
-if (isset($_SESSION["user"])) {
-   header("Location: home.php");
-}
+include_once 'header.php'
 ?>
-<!DOCTYPE html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/home.css">
-    <link href='https://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet'>
-</head>
-<body>
-    <header>
-        <h1>Beauty & Skin Care</h1>
-    </header>
-    <div class="container-fluid">
-        <nav class="main-nav main-nav-scrolled">
-            <ul class="navigation">
-                <li>
-                    <a href="#home" class="page-scroll">Home</a>
-                </li>
-                <li>
-                    <a href="#store" class="page-scroll">Store</a>
-                </li>
-                <li>
-                    <a href="#consultation" class="page-scroll">Consultations</a>
-                </li>
-                <li>
-                    <a href="#aboutus" class="page-scroll">About Us</a>
-                </li>
-                <li>
-                    <a href="profile.php" class="page-scroll">Profile</a>
-                </li>
-                <?php if (!empty($_SESSION['user'])): ?>
-                    <li><a href="basket.php" class="page-scroll"><img src="images/basket.jpg" width="30px" height="30px"></a><li>
-                    <li><a href="vendor/exit.php" class="page-scroll">Sign Out</a></li>
-                <?php else: 
-                    echo '<li><a href="login.php" class="page-scroll">Log In</a></li>';
-                    echo '<li><a href="registration.php" class="page-scroll">Register</a></li>';
-                ?>
-                <?php endif;?>
-            </ul>
-        </nav>  
-    </div>
     <div class="home-main">
         <div class="homeContent" id="home">
             <div class="smallSpace"></div>
