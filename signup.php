@@ -1,43 +1,80 @@
+<?php
+
+include 'includes/dbh.inc.php';
+
+if(isset($_POST['submit'])){
+
+   $name = mysqli_real_escape_string($conn, $_POST['name']);
+   $email = mysqli_real_escape_string($conn, $_POST['email']);
+   $pass = mysqli_real_escape_string($conn, md5($_POST['password']));
+   $cpass = mysqli_real_escape_string($conn, md5($_POST['cpassword']));
+   /*$image = $_FILES['image']['name'];
+   $image_size = $_FILES['image']['size'];
+   $image_tmp_name = $_FILES['image']['tmp_name'];
+   $image_folder = 'uploaded_img/'.$image;*/
+
+   $select = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email' AND password = '$pass'") or die('query failed');
+
+   if(mysqli_num_rows($select) > 0){
+      $message[] = 'User already exist'; 
+   }else{
+      if($pass != $cpass){
+         $message[] = 'confirm password not matched!';
+      }/*elseif($image_size > 2000000){
+         $message[] = 'image size is too large!';
+      }*/else{
+         $insert = mysqli_query($conn, "INSERT INTO `users`(name, email, password /*image*/) VALUES('$name', '$email', '$pass')") or die('query failed');
+
+         if($insert){
+            /*move_uploaded_file($image_tmp_name, $image_folder);*/
+            $message[] = 'Registered successfully!';
+            header('location:login.php');
+         }else{
+            $message[] = 'Registeration failed!';
+         }
+      }
+   }
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
-    <link rel="stylesheet" href="css/signup.css">
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>register</title>
+
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="css/style.css">
+
 </head>
-<div class="blnkspc"></div>
-<section class="signup-form">
-    <center><h2>Sign Up</h2></center>
-    <?php
-    if(isset($_GET["error"])) {
-        if($_GET["error"] == "emptyinput") {
-            echo "<center><p class='error'>Fill in all fields!</p></center>";
-        }
-        else if ($_GET["error"] == "invalidusername") {
-            echo "<center><p class='error'>Choose a proper username!</p></center>";
-        }
-        else if ($_GET["error"] == "invalidemail") {
-            echo "<center><p class='error'>Choose a proper email!</p></center>";
-        }
-        else if ($_GET["error"] == "passwordsdontmatch") {
-            echo "<center><p class='error'>Passwords doesn't match!</p></center>";
-        }
-        else if ($_GET["error"] == "stmtfailed"){
-            echo "<center><p class='error'>Something went wrong, try again!</p></center>";
-        }
-        }
-    ?>
-        <div class="signup-form-form">
-            <form action="includes/signup.inc.php" method="post"></center>
-                <center><input type="text" name="name" placeholder="Full name"></center>
-                <center><input type="text" name="email" placeholder="Email"></center>
-                <center><input type="text" name="uid" placeholder="Username"></center>
-                <center><input type="password" name="pwd" placeholder="Password"></center>
-                <center><input type="password" name="pwdrepeat" placeholder="Confirm password"></center>
-                <button type="submit" name="submit">Sign Up</button>
-                <a href="/index.php">Homepage</a>
-            </form>
-        </div>
-</section>
+<body>
+   
+<div class="form-container">
+
+   <form action="" method="post" enctype="multipart/form-data">
+      <h3>Sign Up</h3>
+      <?php
+      if(isset($message)){
+         foreach($message as $message){
+            echo '<div class="message">'.$message.'</div>';
+         }
+      }
+      ?>
+      <input type="text" name="name" placeholder="Username" class="box" required>
+      <input type="email" name="email" placeholder="Email" class="box" required>
+      <input type="password" name="password" placeholder="Password" class="box" required>
+      <input type="password" name="cpassword" placeholder="Confirm password" class="box" required>
+      <!--<input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png">-->
+      <input type="submit" name="submit" value="Sign Up" class="btn">
+      <p>Already have an account? <a href="login.php">Login now</a></p>
+      <p><a href="index.php">Homepage</a></p>
+   </form>
+
+</div>
+
+</body>
+</html>

@@ -23,19 +23,29 @@
                 <li>
                     <a href="#aboutus" class="page-scroll">About Us</a>
                 </li>
-                <li>
-                    <a href="profile.php" class="page-scroll">Profile</a>
-                </li>
-                <li><a href="basket.php" class="page-scroll"><img src="images/basket.jpg" width="30px" height="30px"></a><li>
-                <?php 
-                if (isset($_SESSION["useruid"])) {
-                    echo '<li><a href="profile.php" class="page-scroll">Profile page</a></li>';
+                
+                <?php
+                session_start();
+
+                // Check if user is logged in
+                if (isset($_POST['usersEmail'])) {
+                    // User is logged in, show logout button
+                    echo '<li><a href="../profile.php" class="page-scroll">Profile</a></li>';
+                    echo '<li><a href="../includes/logout.inc.php" class="page-scroll">Logout</a></li>';
+                } else {
+                    // User is not logged in, show login button
+                    echo '<li><a href="login.php" class="page-scroll">Log In</a></li>';
+                    echo '<li><a href="signup.php" class="page-scroll">Register</a></li>';
+                }
+                /*
+                if (isset($_SESSION["userid"])) {
+                    echo '<li><a href="profile.php" class="page-scroll">Profile</a></li>';
                     echo '<li><a href="logout.inc.php" class="page-scroll">Logout</a></li>';
                 }
                 else {
                     echo '<li><a href="login.php" class="page-scroll">Log In</a></li>';
                     echo '<li><a href="signup.php" class="page-scroll">Register</a></li>';
-                }
+                }*/
                 ?>
             </ul>
         </nav>  

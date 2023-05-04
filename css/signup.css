@@ -4,12 +4,17 @@ body {}
     height: 150px;
 }
 
+h2 {
+    color: #5c3a3e;
+}
+
 .signup-form {
     margin: 0 auto;
     padding: 20px;
     width: 320px;
-    background-color: rgb(169, 216, 169);
+    background-color: #CDB2B9;
     border-radius: 40px;
+    height: 320px;
 }
 
 input {
@@ -18,7 +23,7 @@ input {
     margin-bottom: 10px;
     outline: none;
     border-radius: 10px;
-    border: 1px solid green;
+    border: 1px solid #a2656d;
     padding: 5px 0px 5px 10px;
 }
 
@@ -28,12 +33,29 @@ button {
     text-decoration: none;
     padding: 5px;
     width: 100px;
-    background-color: aliceblue;
-    border: 1px solid rgb(180, 180, 180);
+    background-color: #ffdae1;
+    border: 1px solid rgb(138, 115, 115);
+    color: black;
+}
+
+button a {
+    text-decoration: none;
+    color: black;
+}
+
+.btn-left {
+    float: left;
+}
+
+.btn-right {
+    float: right;
 }
 
 .error {
     padding: 5px;
-    background-color: rgb(150, 156, 156);
+    border-radius: 15px;
+    border: 1px solid #966569;
+    background-color: #fbc0c8;
     color: rgb(117, 17, 17);
+    width: fit-content;
 }

@@ -1,5 +1,5 @@
 <?php
-include_once 'blocks/header.php';
+include_once 'blocks/authheader.php'
 ?>
     <div class="home-main">
         <div class="homeContent" id="home">
@@ -24,7 +24,7 @@ include_once 'blocks/header.php';
                 <p class="smth1">Products available from many countries</p>
                 <p class="smth2">You can see it in store</p>
                 <p class="smth3">🠗</p>
-                <a href="login.php">Store</a>
+                <a href="store.php">Store</a>
             </div>
         </div>
         <div class="consContent" id="consultation">

@@ -1,14 +1,5 @@
 <?php
 
-$serverName = "localhost";
-$dbUserName = "root";
-$dbPassword = "";
-$dbName = "soins";
+$conn = mysqli_connect('localhost','root','','soins') or die('connection failed');
 
-//Connect to database
-global $conn;
-$conn = mysqli_connect($serverName, $dbUserName, $dbPassword, $dbName);
-
-if (!$conn) {
-    die("Something went wrong;");
-}
+?>

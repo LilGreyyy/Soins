@@ -1,4 +1,4 @@
-<!doctype html>
+<!--<!doctype html>
 <html lang="en-US">
     <head>
         <title>HTML5 Local Storage Project</title>
@@ -29,4 +29,49 @@
         <label><input type="button" value="Clear" onclick="ClearAll()">
         * Delete all items</label>
     </div>
-</form>
+</form>-->
+<?php
+include('includes/dbh.inc.php');
+
+if(isset($_SESSION['basket'])) {
+    echo '<table>';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th>Name</th>';
+    echo '<th>Price</th>';
+    echo '<th>Quantity</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    $total_price = 0;
+
+    foreach($_SESSION['basket'] as $product_id => $quantity) {
+        $sql = "SELECT * FROM products WHERE id = '$product_id'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+
+        echo '<tr>';
+        echo '<td>'.$row['name'].'</td>';
+        echo '<td>$'.$row['price'].'</td>';
+        echo '<td>'.$quantity.'</td>';
+        echo '</tr>';
+
+        $total_price += $row['price'] * $quantity;
+    }
+
+    echo '</tbody>';
+    echo '<tfoot>';
+    echo '<tr>';
+    echo '<td colspan="2">Total price:</td>';
+    echo '<td>$'.$total_price.'</td>';
+    echo '</tr>';
+    echo '</tfoot>';
+    echo '</table>';
+} else {
+    echo "Your basket is empty";
+}
+
+mysqli_close($conn);
+?>
+
