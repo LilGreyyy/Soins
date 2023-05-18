@@ -1,77 +1,43 @@
-<!--<!doctype html>
-<html lang="en-US">
-    <head>
-        <title>HTML5 Local Storage Project</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="rating" content="General">
-        <meta name="expires" content="never">
-        <meta name="language" content="English, EN">
-        <meta name="description" content="Shopping cart project with HTML5 and JavaScript">
-        <meta name="keywords" content="HTML5,CSS,JavaScript, html5 session storage, html5 local storage">
-        <meta name="author" content="dcwebmakers.com">
-        <script src="js/storage.js"></script>
-        <link rel="stylesheet" href="storagestyle.css">
-    </head>
-<form name="ShoppingList">
-    <fieldset>
-        <legend>Shopping cart</legend>
-        <label>Item: <input type="text" name="name"></label>
-        <label>Quantity: <input type="text" name="data"></label>
-
-        <input type="button" value="Save"   onclick="SaveItem()">
-        <input type="button" value="Update" onclick="ModifyItem()">
-        <input type="button" value="Delete" onclick="RemoveItem()">
-    </fieldset>
-    <div id="items_table">
-        <h2>Shopping List</h2>
-        <table id="list"></table>
-        <label><input type="button" value="Clear" onclick="ClearAll()">
-        * Delete all items</label>
-    </div>
-</form>-->
 <?php
-include('includes/dbh.inc.php');
+include_once 'blocks/authheader.php';
+include 'includes/dbh.inc.php';
 
-if(isset($_SESSION['basket'])) {
-    echo '<table>';
-    echo '<thead>';
-    echo '<tr>';
-    echo '<th>Name</th>';
-    echo '<th>Price</th>';
-    echo '<th>Quantity</th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
+// Start the session
+session_start();
 
-    $total_price = 0;
+// Check if a product_id is provided
+if (isset($_GET['product_id'])) {
+    // Get the product_id from the URL
+    $product_id = $_GET['product_id'];
 
-    foreach($_SESSION['basket'] as $product_id => $quantity) {
-        $sql = "SELECT * FROM products WHERE id = '$product_id'";
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
+    // Retrieve the product details from the database
+    $sql = "SELECT * FROM products WHERE productId = $product_id";
+    $result = mysqli_query($conn, $sql);
 
-        echo '<tr>';
-        echo '<td>'.$row['name'].'</td>';
-        echo '<td>$'.$row['price'].'</td>';
-        echo '<td>'.$quantity.'</td>';
-        echo '</tr>';
+    // Check if the product exists
+    if (mysqli_num_rows($result) > 0) {
+        // Fetch the product details
+        $product = mysqli_fetch_assoc($result);
 
-        $total_price += $row['price'] * $quantity;
+        // Add the product to the basket
+        $usersId = $_SESSION['usersId']; // Assuming you have stored the userId in a session variable
+        $totalItems = 1; // Assuming you always add one item at a time
+        $totalAmount = $product['price']; // Assuming the total amount is the same as the product price
+
+        // Insert the product into the basket table
+        $insertQuery = "INSERT INTO basket (usersId, productId, totalItems, totalAmount) VALUES (?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $insertQuery);
+        mysqli_stmt_bind_param($stmt, "iiid", $usersId, $product_id, $totalItems, $totalAmount);
+        mysqli_stmt_execute($stmt);
+
+        // Display a success message
+        echo "Product added to basket: " . $product['name'];
+    } else {
+        // Product not found
+        echo "Product not found.";
     }
-
-    echo '</tbody>';
-    echo '<tfoot>';
-    echo '<tr>';
-    echo '<td colspan="2">Total price:</td>';
-    echo '<td>$'.$total_price.'</td>';
-    echo '</tr>';
-    echo '</tfoot>';
-    echo '</table>';
 } else {
-    echo "Your basket is empty";
+    // No product_id provided
+    echo "No product selected.";
 }
-
-mysqli_close($conn);
 ?>
-

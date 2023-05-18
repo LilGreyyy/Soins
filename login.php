@@ -12,8 +12,13 @@ if(isset($_POST['submit'])){
 
    if(mysqli_num_rows($select) > 0){
       $row = mysqli_fetch_assoc($select);
+      $usertype = mysqli_real_escape_string($conn, $row['user_type']);
       $_SESSION['user_id'] = $row['id'];
-      header('location:authindex.php');
+      if ($usertype == 0) {
+         header('location:authindex.php');
+      } else if ($usertype == 1) {
+         header('location:admin/admin.php');
+      }
    }else{
       $message[] = 'Incorrect email or password!';
    }

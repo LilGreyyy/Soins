@@ -1,0 +1,20 @@
+.shop-main {
+    background-color: #ffdee7;
+    padding: 50px;
+    min-height: 310px;
+}
+
+.product {
+    width: 300px;
+    float: left;
+    padding: 20px;
+}
+
+h3 {
+    color: #47242d;
+}
+
+a {
+    text-decoration: none;
+    color: #845e67;
+}

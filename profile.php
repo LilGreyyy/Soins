@@ -48,9 +48,7 @@ if(isset($_GET['logout'])){
       <a href="update_profile.php" class="btn">Update profile</a>
       <a href="authindex.php" class="btn">Homepage</a>
       <a href="profile.php?logout=<?php echo $user_id; ?>" class="delete-btn">Logout</a>
-      <?php 
-      echo '<a href='index.php?id=".$result['id']."' id='btn'>Delete</a>';
-      ?>
+      <a href="deleteuser.php?id=<?php echo $user_id; ?>" class="delete-btn">Delete</a>
    </div>
 
 </div>

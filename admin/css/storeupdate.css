@@ -1,0 +1,27 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 5px solid rgb(78, 57, 57);
+}
+
+th {
+    letter-spacing: 2px;
+    border-collapse: collapse;
+    border: 2px solid rgb(78, 57, 57);
+}
+
+td {
+    letter-spacing: 1px;
+    border-collapse: collapse;
+    border: 2px solid rgb(78, 57, 57);
+}
+
+.create-product-button button {
+    padding: 3px;
+    outline: none;
+    background-color: aliceblue;
+    border-radius: 16px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}

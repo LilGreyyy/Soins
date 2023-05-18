@@ -18,12 +18,12 @@ if(isset($_POST['update_profile'])){
 
    if(!empty($update_pass) || !empty($new_pass) || !empty($confirm_pass)){
       if($update_pass != $old_pass){
-         $message[] = 'old password not matched!';
+         $message[] = 'Old password not matched!';
       }elseif($new_pass != $confirm_pass){
-         $message[] = 'confirm password not matched!';
+         $message[] = 'Confirm password not matched!';
       }else{
          mysqli_query($conn, "UPDATE `users` SET password = '$confirm_pass' WHERE id = '$user_id'") or die('query failed');
-         $message[] = 'password updated successfully!';
+         $message[] = 'Password updated successfully!';
       }
    }
 
@@ -34,13 +34,13 @@ if(isset($_POST['update_profile'])){
 
    if(!empty($update_image)){
       if($update_image_size > 2000000){
-         $message[] = 'image is too large';
+         $message[] = 'Image is too large';
       }else{
          $image_update_query = mysqli_query($conn, "UPDATE `users` SET image = '$update_image' WHERE id = '$user_id'") or die('query failed');
          if($image_update_query){
             move_uploaded_file($update_image_tmp_name, $update_image_folder);
          }
-         $message[] = 'image updated succssfully!';
+         $message[] = 'Image updated succssfully!';
       }
    }
 
