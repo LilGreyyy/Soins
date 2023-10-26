@@ -1,40 +1,41 @@
 form {
-    width: 500px;
-    padding: 20px;
+    max-width: 500px;
     margin: 0 auto;
     background-color: #CDB2B9;
     border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    /* Center the form content */
 }
 
 .blnkspc {
-    height: 160px;
+    height: 20px;
+    /* Reduce the height for better spacing */
 }
 
 form>label {
-    float: left;
+    display: block;
+    /* Make labels stack on top of inputs */
+    text-align: left;
 }
 
-form>input {
-    width: 330px;
+form>input,
+form>textarea {
+    width: 100%;
     border: 1px solid grey;
-    padding: 3px;
+    padding: 10px;
     border-radius: 10px;
     outline: none;
-    margin-bottom: 5px;
-}
-
-form>textarea {
-    width: 330px;
-    height: 90px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 input[type="submit"] {
-    margin: 0 auto;
     background-color: #ebced6;
-    margin-left: 80px;
+    margin-left: 0;
+    /* Remove margin-left to center the submit button */
 }
 
 .blnk {
-    height: 30px;
+    height: 10px;
+    /* Reduce the height for better spacing */
 }

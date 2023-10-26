@@ -1,7 +1,8 @@
 .shop-main {
     background-color: #ffdee7;
     padding: 50px;
-    min-height: 310px;
+    min-height: 500px;
+    /* Adjust this value to your desired height */
 }
 
 .product {

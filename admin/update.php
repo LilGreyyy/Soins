@@ -1,11 +1,17 @@
 <?php
 require_once "../includes/dbh.inc.php";
 include_once "adminheader.php";
+
 // Check if product ID is provided in URL
 $product_id = isset($_GET['productId']) ? $_GET['productId'] : '';
 
+// Debugging: Output the SQL query and product ID for troubleshooting
+/*$sql = "SELECT * FROM products WHERE product_id = $product_id";
+echo "SQL Query: $sql<br>";
+echo "Product ID from URL: " . $product_id . "<br>";*/
+
 // Prepare the SQL statement with a placeholder for the product ID
-$sql = "SELECT * FROM `products` WHERE productId = ?";
+$sql = "SELECT * FROM `products` WHERE `productId` = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "i", $product_id);
 mysqli_stmt_execute($stmt);
@@ -19,7 +25,7 @@ if (mysqli_num_rows($result) > 0) {
 ?>
 <link href="css/update.css" rel="stylesheet">
 <div class="blnk"></div>
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
   <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['productId']); ?>">
   <label for="product_name">Product Name:</label>
   <input type="text" name="product_name" value="<?php echo htmlspecialchars($row['name']); ?>">
@@ -28,18 +34,59 @@ if (mysqli_num_rows($result) > 0) {
   <label for="product_description">Product Description:</label>
   <textarea name="product_description"><?php echo htmlspecialchars($row['description']); ?></textarea>
   <label for="product_price">Product Price:</label>
-  <input type="number" name="product_price" value="<?php echo htmlspecialchars($row['price']); ?>">
+  <input type="text" name="product_price" value="<?php echo htmlspecialchars($row['price']); ?>">
   <label for="product_quantity">Product Quantity:</label>
   <input type="number" name="product_quantity" value="<?php echo htmlspecialchars($row['quantity']); ?>">
-  <input type="submit" value="Update">
+  <label for="product_image">Product Image:</label>
+  <input type="file" name="product_image">
+  <input type="submit" value="Update" name="update_product">
 </form>
 <div class="blnk"></div>
 <?php
-} else {
-  echo "Product not found.";
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_product"])) {
+  if (isset($_POST["product_id"])) {
+    // Handle image upload
+    $uploadDirectory = "uploads/"; // Change this to your desired upload directory
+    $uploadedFile = $_FILES["product_image"]["tmp_name"];
+    $product_image = $uploadDirectory . $_FILES["product_image"]["name"];
+
+
+    if (move_uploaded_file($uploadedFile, $product_image)) {
+      // Image uploaded successfully, now update the database
+      $product_id = $_POST["product_id"];
+      $product_name = $_POST["product_name"];
+      $product_size = $_POST["product_size"];
+      $product_description = $_POST["product_description"];
+      $product_price = validateAndConvertPrice($_POST["product_price"]);
+      $product_quantity = $_POST["product_quantity"];
+
+      // Update the product information in the database, including the image file path
+      $sql = "UPDATE `products` SET `name` = ?, `size` = ?, `description` = ?, `price` = ?, `quantity` = ?, `image` = ? WHERE `productId` = ?";
+      $stmt = mysqli_prepare($conn, $sql);
+      mysqli_stmt_bind_param($stmt, "ssssdsi", $product_name, $product_size, $product_description, $product_price, $product_quantity, $product_image, $product_id);
+
+      if (mysqli_stmt_execute($stmt)) {
+        echo "Product updated successfully.";
+      } else {
+        echo "Error updating product: " . mysqli_error($conn);
+      }
+
+      mysqli_stmt_close($stmt);
+    } else {
+      echo "Error uploading the image.";
+    }
+  }
+}
+
+// Function to validate and convert the product price
+function validateAndConvertPrice($price) {
+  // Remove any non-numeric characters and then convert to a float
+  $cleaned_price = filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+  return floatval($cleaned_price);
 }
 
 // Close the prepared statement and the database connection
-mysqli_stmt_close($stmt);
 mysqli_close($conn);
 ?>

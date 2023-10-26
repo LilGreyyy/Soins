@@ -8,16 +8,19 @@ if (!$conn) {
   die("Connect error: " . mysqli_connect_error());
 }
 
-// Fetching product information from a database
-$sql = "SELECT productId, name, size, description, price, quantity FROM products";
+$uploadDirectory = "./admin/uploads"; // Define the directory where your product images are stored
+
+// fetching product information from database
+$sql = "SELECT productId, name, size, description, price, quantity, image FROM products";
 $result = mysqli_query($conn, $sql);
 
-// Проверка наличия результатов
+// checking for results
 if (mysqli_num_rows($result) > 0) {
   // Data output from table HTML
   echo "<table>
   <tr>
   <th>ID</th>
+  <th>Image</th>
   <th>Name</th>
   <th>Size</th>
   <th>Description</th>
@@ -29,6 +32,7 @@ if (mysqli_num_rows($result) > 0) {
   while($row = mysqli_fetch_assoc($result)) {
     echo "<tr>
     <td>".$row["productId"]."</td>
+    <td><img src='".$row["image"]."' alt='Product Image' width='100'></td>
     <td>".$row["name"]."</td>
     <td>".$row["size"]."</td>
     <td>".$row["description"]."</td>
@@ -43,7 +47,7 @@ if (mysqli_num_rows($result) > 0) {
   echo "No result";
 }
 
-// Closing the database connection
+// closing the database connection
 mysqli_close($conn);
 ?>
 

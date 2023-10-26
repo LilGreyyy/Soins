@@ -1,8 +1,11 @@
 <?php
 include 'includes/dbh.inc.php';
 include_once 'blocks/authheader.php';
+
+$uploadDirectory = "./admin/"; // Define the directory where your product images are stored
+
 // Retrieve products from the database
-$sql = "SELECT * FROM products";
+$sql = "SELECT productId, name, size, description, price, quantity, image FROM products";
 $result = mysqli_query($conn, $sql);
 
 ?>
@@ -15,10 +18,16 @@ $result = mysqli_query($conn, $sql);
         // Loop through each product and display it in a div
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<div class='product'>";
-            echo "<h3>" . $row['name'] . "</h3>";
+            if (isset($row['image'])) {
+                echo "<img src='" . $uploadDirectory . '/' . $row['image'] . "' alt='Product Image' width='250'>";
+            } else {
+                echo "Image not available"; // Handle the case when 'image' is not set
+            }            
+            echo "<h3><a href='product_detail.php?productId=" . $row['productId'] . "'>" . $row['name'] . "</a></h3>"; // Replace 'product_detail.php' with your actual product detail page
+            // Check if 'image_path' exists in the $row array         
             echo "<p>" . $row['size'] . "</p>";
             echo "<p>Price: $" . $row['price'] . "</p>";
-            echo "<a href='basket.php?product_id=" . $row['productId'] . "'>Add to Cart</a>";
+            echo "<a href='basket.php?productId=" . $row['productId'] . "'>Add to Cart</a>";
             echo "</div>";
         }
         ?>

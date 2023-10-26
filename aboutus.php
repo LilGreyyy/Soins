@@ -1,5 +1,5 @@
 <?php
-include_once 'blocks/header.php';
+include_once 'blocks/authheader.php'
 ?>
 <head>
     <meta charset="UTF-8">

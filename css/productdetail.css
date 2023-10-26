@@ -1,0 +1,28 @@
+/* style.css */
+
+
+/* Style the h1 element */
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+
+/* Style the product image */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* Style the paragraphs */
+
+p {
+    font-size: 16px;
+    color: #666;
+}
+
+
+/* You can add more styles as needed for other elements in your HTML/PHP code */
