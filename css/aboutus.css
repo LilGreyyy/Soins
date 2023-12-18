@@ -1,5 +1,5 @@
 .main {
-    background-color: #f8dce4;
+    background-color: #ffffff;
     padding-top: 20px;
 }
 
@@ -19,4 +19,61 @@
 
 .blnks {
     height: 30px;
+}
+
+.firstAS {
+    background-image: url(../images/Nicepage_hZT9FvRKyQ.png);
+    min-height: 900px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: #ce83a2;
+    background-blend-mode: normal;
+}
+
+.firstAS img {
+    padding-top: 50px;
+}
+
+.firstAStxt {
+    position: absolute;
+    top: 580px;
+    left: 180px;
+    max-width: 450px;
+    color: #ffffff;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 3px;
+    border: 2px solid #c05573;
+}
+
+.firstAStxt h2 {
+    color: #c05573;
+    font-size: 60px;
+}
+
+.firstAStxt p {
+    color: #c05573;
+}
+
+.secondAS {
+    background-color: #e68387;
+    padding: 50px;
+    opacity: 0.8;
+}
+
+.secondAS iframe {
+    filter: invert(15%);
+    position: relative;
+    width: 60%;
+}
+
+.workInfo {
+    margin-top: 90px;
+    margin-left: 70px;
+    float: left;
+    background-color: #f1b5b8;
+    padding: 20px;
+    border-radius: 9px;
+    border: 2px solid #64464f;
 }

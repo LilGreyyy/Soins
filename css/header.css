@@ -1,0 +1,227 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --brand-clr: #4d1a1a;
+    --bg-primary: #541b1b;
+    --border-clr: #4d1616;
+    --accent-blue: #380f0f;
+    --text-primary: #53161f;
+    --text-accent: #a96464;
+    --header: 3.5rem;
+    --full-width: 100%;
+    --padding-space: calc(var(--full-width) - 2rem);
+    --space-025: 0.25rem;
+    --space-05: 0.5rem;
+    --space-1: 1rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    display: flex;
+    flex-flow: column;
+    font-family: system-ui;
+}
+
+.container {
+    flex-grow: 1;
+    display: grid;
+    inline-size: clamp(var(--min-width), var(--padding-space), var(--max-width));
+}
+
+.site-header {
+    padding: 1rem;
+    --header-margin: 5vh;
+    --shadow: 0 0.1875em 0.3125em #0003, 0 0.125em 0.5em #0002;
+    margin-block: auto;
+    min-block-size: var(--header);
+    background-color: #fff;
+    outline: 1px solid var(--border-clr);
+    border-radius: var(--bd-radius);
+    box-shadow: var(--shadow);
+}
+
+.header__content--flow {
+    block-size: inherit;
+    display: flex;
+    flex-flow: wrap;
+    /* Breakpoint 1280px > 720px */
+    gap: 0 clamp(3.5rem, -24.14rem + 61.43vw, 25rem);
+}
+
+.header__content--flow>* {
+    flex-grow: 1;
+    height: var(--header);
+}
+
+.header-content--left {
+    display: grid;
+    grid-auto-flow: column;
+    inline-size: max-content;
+    place-content: center;
+}
+
+.brand-logo {
+    gap: var(--space-05);
+    align-items: center;
+    display: inline-flex;
+}
+
+.brand-logo>svg {
+    fill: var(--brand-clr);
+}
+
+.logo-text {
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.site-header {
+    border-bottom: 1px solid #8c5265;
+}
+
+.nav-toggle {
+    height: 2.25rem;
+    display: inline-grid;
+    place-content: center;
+    background: none;
+    border: none;
+    visibility: hidden;
+    cursor: pointer;
+    position: fixed;
+    margin-top: 10px;
+    margin-left: 70px;
+}
+
+.nav-toggle:active {
+    scale: 0.8;
+}
+
+.toggle--icon {
+    width: 1.5rem;
+    height: 0.25rem;
+    border-radius: 10vh;
+    position: relative;
+    background-color: #8c5265;
+}
+
+.toggle--icon::before,
+.toggle--icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+    translate: 0 var(--bar--top, 0.5rem);
+    background-color: #8c5265;
+}
+
+.toggle--icon::after {
+    --bar--top: -0.5rem;
+}
+
+.header-content--right {
+    flex-grow: 999;
+    flex: 1;
+}
+
+.header-nav {
+    display: grid;
+    align-items: center;
+    block-size: 100%;
+}
+
+.nav__list {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: space-evenly;
+    grid-auto-rows: 2.25rem;
+}
+
+.list-item {
+    block-size: 100%;
+}
+
+.nav__link {
+    block-size: inherit;
+    display: inline-grid;
+    place-items: center;
+    min-width: 10ch;
+    color: var(--text-primary);
+    font-size: 15.3px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.nav__link:focus-within {
+    color: var(--accent-blue);
+}
+
+.nav__link:hover:not(:focus) {
+    border-bottom: 2px solid currentColor;
+}
+
+.nav__list:hover .nav__link:not(:focus, :hover) {
+    color: var(--text-accent);
+}
+
+@media (max-width: 575px) {
+    .header-content--left {
+        justify-content: space-between;
+    }
+    .header-content--right {
+        height: auto;
+    }
+    .nav-toggle {
+        visibility: visible;
+    }
+    .nav__list {
+        right: 0;
+        margin-inline: var(--space-1);
+        top: calc(var(--header) + var(--space-1));
+        gap: var(--space-05) 0;
+        position: fixed;
+        width: 10em;
+        background-color: #fff;
+        border-radius: var(--bd-radius);
+        border: 1px solid var(--border-clr);
+        padding-block: 0.5rem;
+        grid-auto-flow: row;
+        box-shadow: var(--shadow);
+        visibility: hidden;
+        opacity: 0;
+    }
+    .nav__list[aria-expanded="true"] {
+        visibility: visible;
+        transform-origin: top center;
+        opacity: 1;
+        transition: visibility 0ms, transform 166ms ease, opacity 166ms linear;
+    }
+}
+
+@media (max-width: 479px) {
+    .header-content--left>* {
+        scale: 0.83;
+    }
+    .nav__list {
+        width: calc(var(--full-width) - (var(--space-1) * 2));
+    }
+}
+
+@media (max-width: 767px) {
+    /* Your tablet-specific styles here */
+    .header-content--left {
+        justify-content: space-between;
+        /* or any other necessary adjustments */
+    }
+}

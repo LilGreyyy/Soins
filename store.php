@@ -1,6 +1,6 @@
 <?php
 include 'includes/dbh.inc.php';
-include_once 'blocks/authheader.php';
+include_once 'blocks/header.php';
 
 $uploadDirectory = "./admin/"; // Define the directory where your product images are stored
 
@@ -23,11 +23,13 @@ $result = mysqli_query($conn, $sql);
             } else {
                 echo "Image not available"; // Handle the case when 'image' is not set
             }            
-            echo "<h3><a href='product_detail.php?productId=" . $row['productId'] . "'>" . $row['name'] . "</a></h3>"; // Replace 'product_detail.php' with your actual product detail page
-            // Check if 'image_path' exists in the $row array         
-            echo "<p>" . $row['size'] . "</p>";
-            echo "<p>Price: $" . $row['price'] . "</p>";
-            echo "<a href='basket.php?productId=" . $row['productId'] . "'>Add to Cart</a>";
+                echo "<div class='productTxt'>";
+                echo "<h3><a href='product_detail.php?productId=" . $row['productId'] . "'>" . $row['name'] . "</a></h3>";
+                // Check if 'image_path' exists in the $row array
+                echo "<p>" . $row['size'] . "</p>";
+                echo "<p>Price: $" . $row['price'] . "</p>";
+                echo "<a class='addtc' href='basket.php?productId=" . $row['productId'] . "'>Add to Cart</a>";
+                echo "</div>";
             echo "</div>";
         }
         ?>

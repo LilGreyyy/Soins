@@ -31,7 +31,6 @@ if(isset($_GET['logout'])){
 <body>
    
 <div class="container">
-
    <div class="profile">
       <?php
          $select = mysqli_query($conn, "SELECT * FROM `users` WHERE id = '$user_id'") or die('query failed');
@@ -46,7 +45,7 @@ if(isset($_GET['logout'])){
       ?>
       <h3><?php echo $fetch['name']; ?></h3>
       <a href="update_profile.php" class="btn">Update profile</a>
-      <a href="authindex.php" class="btn">Homepage</a>
+      <a href="index.php" class="btn">Homepage</a>
       <a href="profile.php?logout=<?php echo $user_id; ?>" class="delete-btn">Logout</a>
       <a href="deleteuser.php?id=<?php echo $user_id; ?>" class="delete-btn">Delete</a>
    </div>

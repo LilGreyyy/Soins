@@ -1,3 +1,3 @@
 <?php
-include_once 'blocks/authheader.php'
+include_once 'blocks/header.php'
 ?>

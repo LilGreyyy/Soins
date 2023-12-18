@@ -1,42 +1,59 @@
 <?php
-
 include 'includes/dbh.inc.php';
 
-if(isset($_POST['submit'])){
+$message = array(); // Initialize the message array
 
-   $name = mysqli_real_escape_string($conn, $_POST['name']);
-   $email = mysqli_real_escape_string($conn, $_POST['email']);
-   $pass = mysqli_real_escape_string($conn, md5($_POST['password']));
-   $cpass = mysqli_real_escape_string($conn, md5($_POST['cpassword']));
-   /*$image = $_FILES['image']['name'];
-   $image_size = $_FILES['image']['size'];
-   $image_tmp_name = $_FILES['image']['tmp_name'];
-   $image_folder = 'uploaded_img/'.$image;*/
+if (isset($_POST['submit'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $cpassword = mysqli_real_escape_string($conn, $_POST['cpassword']);
 
-   $select = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email' AND password = '$pass'") or die('query failed');
+    // Password validation
+    if (strlen($password) < 8) {
+        $message[] = 'Password should be at least 8 characters long.';
+    }
+    
+    if (!preg_match("#[0-9]+#", $password)) {
+        $message[] = 'Password should contain at least one number.';
+    }
 
-   if(mysqli_num_rows($select) > 0){
-      $message[] = 'User already exist'; 
-   }else{
-      if($pass != $cpass){
-         $message[] = 'confirm password not matched!';
-      }/*elseif($image_size > 2000000){
-         $message[] = 'image size is too large!';
-      }*/else{
-         $insert = mysqli_query($conn, "INSERT INTO `users`(name, email, password /*image*/) VALUES('$name', '$email', '$pass')") or die('query failed');
+    if (!preg_match("#[A-Z]+#", $password)) {
+        $message[] = 'Password should contain at least one uppercase letter.';
+    }
 
-         if($insert){
-            /*move_uploaded_file($image_tmp_name, $image_folder);*/
-            $message[] = 'Registered successfully!';
-            header('location:login.php');
-         }else{
-            $message[] = 'Registeration failed!';
-         }
-      }
-   }
+    if (!preg_match("#[a-z]+#", $password)) {
+        $message[] = 'Password should contain at least one lowercase letter.';
+    }
 
+    if (!preg_match("#[\W]+#", $password)) {
+        $message[] = 'Password should contain at least one special character.';
+    }
+
+    if ($password != $cpassword) {
+        $message[] = 'Passwords do not match.';
+    }
+
+    if (empty($message)) {
+        // Hash the password if all validations pass
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $select = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'") or die('query failed');
+
+        if (mysqli_num_rows($select) > 0) {
+            $message[] = 'User already exists';
+        } else {
+            $insert = mysqli_query($conn, "INSERT INTO `users` (name, email, password) VALUES ('$name', '$email', '$hashed_password')") or die('query failed');
+
+            if ($insert) {
+                $message[] = 'Registered successfully!';
+                header('location: index.php');
+            } else {
+                $message[] = 'Registration failed!';
+            }
+        }
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -45,9 +62,7 @@ if(isset($_POST['submit'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>register</title>
-
-   <!-- custom css file link  -->
+   <title>Sign Up</title>
    <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -68,7 +83,6 @@ if(isset($_POST['submit'])){
       <input type="email" name="email" placeholder="Email" class="box" required>
       <input type="password" name="password" placeholder="Password" class="box" required>
       <input type="password" name="cpassword" placeholder="Confirm password" class="box" required>
-      <!--<input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png">-->
       <input type="submit" name="submit" value="Sign Up" class="btn">
       <p>Already have an account? <a href="login.php">Login now</a></p>
       <p><a href="index.php">Homepage</a></p>

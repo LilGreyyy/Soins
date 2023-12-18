@@ -1,12 +1,12 @@
 .shop-main {
     background-color: #ffdee7;
     padding: 50px;
-    min-height: 500px;
+    min-height: 88vh;
     /* Adjust this value to your desired height */
 }
 
 .product {
-    width: 300px;
+    width: 280px;
     float: left;
     padding: 20px;
 }
@@ -17,5 +17,26 @@ h3 {
 
 a {
     text-decoration: none;
-    color: #845e67;
+    color: #4f2731;
+}
+
+.addtc {
+    font-weight: 700;
+    border-bottom: 1px solid #5b313c;
+}
+
+.productTxt {
+    position: relative;
+    background-color: #e2bcc5;
+    max-width: 200px;
+    padding: 15px;
+    margin-left: 30px;
+    margin-top: -10px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Vertical centering */
+    align-items: center;
+    /* Horizontal centering */
 }

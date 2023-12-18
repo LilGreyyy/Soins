@@ -3,18 +3,21 @@ include "adminheader.php";
 ?>
 <?php
 require_once "../includes/dbh.inc.php";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if (!$conn) {
   die("Connect error: " . mysqli_connect_error());
 }
 
-$uploadDirectory = "./admin/uploads"; // Define the directory where your product images are stored
+$uploadDirectory = "./uploads";
+chmod($uploadDirectory, 0755);
 
-// fetching product information from database
+// Fetching product information from database
 $sql = "SELECT productId, name, size, description, price, quantity, image FROM products";
 $result = mysqli_query($conn, $sql);
 
-// checking for results
+// Checking for results
 if (mysqli_num_rows($result) > 0) {
   // Data output from table HTML
   echo "<table>
@@ -38,8 +41,8 @@ if (mysqli_num_rows($result) > 0) {
     <td>".$row["description"]."</td>
     <td>$".$row["price"]."</td>
     <td class='quantity'>".$row["quantity"]."</td>
-    <td><button onclick=\"window.location.href='update.php?productId=".$row["productId"]."'\">Update</button></td>
-    <td><button onclick=\"deleteProduct(".$row["productId"].")\">Delete</button></td>
+    <td><button class='tbb' onclick=\"window.location.href='update.php?productId=".$row["productId"]."'\">Update</button></td>
+    <td><button class='tbb' onclick=\"deleteProduct(".$row["productId"].")\">Delete</button></td>
     </tr>";
   }
   echo "</table>";
@@ -47,7 +50,7 @@ if (mysqli_num_rows($result) > 0) {
   echo "No result";
 }
 
-// closing the database connection
+// Closing the database connection
 mysqli_close($conn);
 ?>
 

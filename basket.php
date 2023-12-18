@@ -1,59 +1,57 @@
 <?php
-include_once 'blocks/authheader.php';
+include_once 'blocks/header.php';
 include 'includes/dbh.inc.php';
 
-// Start the session
-session_start();
+// Debugging
+var_dump($_SESSION);
 
-$userId = $_SESSION['usersId']; // Retrieve the user's ID from the session
+// Check if session not started for this user
+if (!isset($_SESSION['user_id'])) {
+    echo "User ID not found in session.";
+    die(); // Stop execution
+}
 
-// Check if a product_id is provided
-if (isset($_GET['product_id'])) {
-    // Get the product_id from the URL
-    $product_id = $_GET['product_id'];
+$user_id = $_SESSION['user_id'];
 
-    // Retrieve the product details from the database
+// Before checking for productId
+if (isset($_GET['productId'])) {
+    $productId = $_GET['productId'];
+
+    // Get data from the database
     $sql = "SELECT * FROM products WHERE productId = ?";
-    $result = mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $productId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
     // Check if the product exists
     if (mysqli_num_rows($result) > 0) {
         // Fetch the product details
         $product = mysqli_fetch_assoc($result);
 
-        // Check if the record already exists in the basket
+        // Check if already exists in basket
         $checkQuery = "SELECT * FROM basket WHERE usersId = ? AND productId = ?";
         $checkStmt = mysqli_prepare($conn, $checkQuery);
-        mysqli_stmt_bind_param($checkStmt, "ii", $userId, $product_id);
+        mysqli_stmt_bind_param($checkStmt, "ii", $user_id, $productId);
         mysqli_stmt_execute($checkStmt);
+        $checkResult = mysqli_stmt_get_result($checkStmt);
 
-        if (mysqli_stmt_num_rows($checkStmt) > 0) {
-            // Record already exists, you should update it
-            $updateQuery = "UPDATE basket SET totalItems = totalItems + 1, totalAmount = totalAmount + ? WHERE usersId = ? AND productId = ?";
-            $updateStmt = mysqli_prepare($conn, $updateQuery);
-            $totalAmount = $product['price'];
-            mysqli_stmt_bind_param($updateStmt, "dii", $totalAmount, $userId, $product_id);
-            mysqli_stmt_execute($updateStmt);
-
-            // Display a success message
-            echo "Product updated in the basket: " . $product['name'];
+        if (mysqli_num_rows($checkResult) > 0) {
+            // If exists, update
+            // ... (your update code)
         } else {
-            // Insert the new record
-            $totalItems = 1; // Assuming you always add one item at a time
-            $insertQuery = "INSERT INTO basket (usersId, productId, totalItems, totalAmount) VALUES (?, ?, ?, ?)";
-            $insertStmt = mysqli_prepare($conn, $insertQuery);
-            mysqli_stmt_bind_param($insertStmt, "iiid", $userId, $product_id, $totalItems, $totalAmount);
-            mysqli_stmt_execute($insertStmt);
-
-            // Display a success message
-            echo "Product added to the basket: " . $product['name'];
+            // New
+            // ... (your insert code)
         }
+
+        // Close the statements
+        mysqli_stmt_close($checkStmt);
+        mysqli_stmt_close($stmt);
     } else {
-        // Product not found
         echo "Product not found.";
     }
-} else {
-    // No product_id provided
-    echo "No product selected.";
+
+    // Close database connection (optional)
+    mysqli_close($conn);
 }
 ?>

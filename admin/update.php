@@ -5,11 +5,6 @@ include_once "adminheader.php";
 // Check if product ID is provided in URL
 $product_id = isset($_GET['productId']) ? $_GET['productId'] : '';
 
-// Debugging: Output the SQL query and product ID for troubleshooting
-/*$sql = "SELECT * FROM products WHERE product_id = $product_id";
-echo "SQL Query: $sql<br>";
-echo "Product ID from URL: " . $product_id . "<br>";*/
-
 // Prepare the SQL statement with a placeholder for the product ID
 $sql = "SELECT * FROM `products` WHERE `productId` = ?";
 $stmt = mysqli_prepare($conn, $sql);
@@ -23,6 +18,7 @@ $result = mysqli_stmt_get_result($stmt);
 if (mysqli_num_rows($result) > 0) {
   $row = mysqli_fetch_assoc($result);
 ?>
+
 <link href="css/update.css" rel="stylesheet">
 <div class="blnk"></div>
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data">
@@ -47,36 +43,41 @@ if (mysqli_num_rows($result) > 0) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_product"])) {
   if (isset($_POST["product_id"])) {
-    // Handle image upload
-    $uploadDirectory = "uploads/"; // Change this to your desired upload directory
-    $uploadedFile = $_FILES["product_image"]["tmp_name"];
-    $product_image = $uploadDirectory . $_FILES["product_image"]["name"];
+    $product_id = $_POST["product_id"];
+    $product_name = $_POST["product_name"];
+    $product_size = $_POST["product_size"];
+    $product_description = $_POST["product_description"];
+    $product_price = validateAndConvertPrice($_POST["product_price"]);
+    $product_quantity = $_POST["product_quantity"];
 
+    // Handle image upload only if a file was selected
+    if (!empty($_FILES["product_image"]["name"])) {
+      $uploadDirectory = "uploads/";
+      $uploadedFile = $_FILES["product_image"]["tmp_name"];
+      $product_image = $uploadDirectory . $_FILES["product_image"]["name"];
 
-    if (move_uploaded_file($uploadedFile, $product_image)) {
-      // Image uploaded successfully, now update the database
-      $product_id = $_POST["product_id"];
-      $product_name = $_POST["product_name"];
-      $product_size = $_POST["product_size"];
-      $product_description = $_POST["product_description"];
-      $product_price = validateAndConvertPrice($_POST["product_price"]);
-      $product_quantity = $_POST["product_quantity"];
-
-      // Update the product information in the database, including the image file path
-      $sql = "UPDATE `products` SET `name` = ?, `size` = ?, `description` = ?, `price` = ?, `quantity` = ?, `image` = ? WHERE `productId` = ?";
-      $stmt = mysqli_prepare($conn, $sql);
-      mysqli_stmt_bind_param($stmt, "ssssdsi", $product_name, $product_size, $product_description, $product_price, $product_quantity, $product_image, $product_id);
-
-      if (mysqli_stmt_execute($stmt)) {
-        echo "Product updated successfully.";
-      } else {
-        echo "Error updating product: " . mysqli_error($conn);
+      if ($_FILES["product_image"]["error"] !== UPLOAD_ERR_OK) {
+        echo "Error uploading the image. Error code: " . $_FILES["product_image"]["error"];
+        exit; // Exit the script to prevent further execution
       }
 
-      mysqli_stmt_close($stmt);
+      if (!move_uploaded_file($uploadedFile, $product_image)) {
+        echo "Error moving the uploaded file.";
+        exit;
+      }
+    } 
+    // Update the product information in the database, including the image file path
+    $sql = "UPDATE `products` SET `name` = ?, `size` = ?, `description` = ?, `price` = ?, `quantity` = ?, `image` = ? WHERE `productId` = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "sssdisi", $product_name, $product_size, $product_description, $product_price, $product_quantity, $product_image, $product_id);
+
+    if (mysqli_stmt_execute($stmt)) {
+      echo "Product updated successfully.";
     } else {
-      echo "Error uploading the image.";
+      echo "Error updating product: " . mysqli_error($conn);
     }
+
+    mysqli_stmt_close($stmt);
   }
 }
 

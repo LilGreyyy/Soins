@@ -1,8 +1,10 @@
 <?php
-
 include 'includes/dbh.inc.php';
 session_start();
 $user_id = $_SESSION['user_id'];
+
+$select = mysqli_query($conn, "SELECT * FROM `users` WHERE id = '$user_id'") or die('query failed');
+$fetch = mysqli_fetch_assoc($select);
 
 if(isset($_POST['update_profile'])){
 
@@ -11,40 +13,48 @@ if(isset($_POST['update_profile'])){
 
    mysqli_query($conn, "UPDATE `users` SET name = '$update_name', email = '$update_email' WHERE id = '$user_id'") or die('query failed');
 
-   $old_pass = $_POST['old_pass'];
-   $update_pass = mysqli_real_escape_string($conn, md5($_POST['update_pass']));
-   $new_pass = mysqli_real_escape_string($conn, md5($_POST['new_pass']));
-   $confirm_pass = mysqli_real_escape_string($conn, md5($_POST['confirm_pass']));
+   $old_pass_input = md5($_POST['old_pass']);
+   $update_pass = password_hash($_POST['update_pass'], PASSWORD_DEFAULT);
 
-   if(!empty($update_pass) || !empty($new_pass) || !empty($confirm_pass)){
-      if($update_pass != $old_pass){
-         $message[] = 'Old password not matched!';
-      }elseif($new_pass != $confirm_pass){
+   $new_pass = mysqli_real_escape_string($conn, $_POST['new_pass']);
+   $confirm_pass = mysqli_real_escape_string($conn, $_POST['confirm_pass']);
+
+   if (!empty($new_pass) && !empty($confirm_pass)) {
+      if ($new_pass != $confirm_pass) {
          $message[] = 'Confirm password not matched!';
-      }else{
-         mysqli_query($conn, "UPDATE `users` SET password = '$confirm_pass' WHERE id = '$user_id'") or die('query failed');
+      } else {
+         $hashed_new_pass = password_hash($new_pass, PASSWORD_DEFAULT);
+         mysqli_query($conn, "UPDATE `users` SET password = '$hashed_new_pass' WHERE id = '$user_id'") or die('query failed');
          $message[] = 'Password updated successfully!';
       }
+   } elseif (!empty($new_pass) || !empty($confirm_pass)) {
+      $message[] = 'Both new password and confirm password must be filled!';
+   } else {
+         $message[] = 'New password and confirm password must be filled!';
+      }
+   } else {
+      $message[] = 'Old password not matched!';
    }
 
-   $update_image = $_FILES['update_image']['name'];
-   $update_image_size = $_FILES['update_image']['size'];
-   $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
-   $update_image_folder = 'uploaded_img/'.$update_image;
+   $update_image = isset($_FILES['update_image']) ? $_FILES['update_image'] : null;
 
-   if(!empty($update_image)){
-      if($update_image_size > 2000000){
+   if (!empty($update_image)) {
+      $update_image_name = $update_image['name'];
+      $update_image_size = $update_image['size'];
+      $update_image_tmp_name = $update_image['tmp_name'];
+      $update_image_folder = 'uploaded_img/' . $update_image_name;
+
+      if ($update_image_size > 2000000) {
          $message[] = 'Image is too large';
-      }else{
-         $image_update_query = mysqli_query($conn, "UPDATE `users` SET image = '$update_image' WHERE id = '$user_id'") or die('query failed');
-         if($image_update_query){
-            move_uploaded_file($update_image_tmp_name, $update_image_folder);
+      } else {
+         $image_update_query = mysqli_query($conn, "UPDATE `users` SET image = '$update_image_name' WHERE id = '$user_id'") or die('query failed');
+         if ($image_update_query) {
+               move_uploaded_file($update_image_tmp_name, $update_image_folder);
          }
-         $message[] = 'Image updated succssfully!';
+         $message[] = 'Image updated successfully!';
       }
    }
 
-}
 
 ?>
 
@@ -64,18 +74,11 @@ if(isset($_POST['update_profile'])){
    
 <div class="update-profile">
 
-   <?php
-      $select = mysqli_query($conn, "SELECT * FROM `users` WHERE id = '$user_id'") or die('query failed');
-      if(mysqli_num_rows($select) > 0){
-         $fetch = mysqli_fetch_assoc($select);
-      }
-   ?>
-
    <form action="" method="post" enctype="multipart/form-data">
       <?php
-         if($fetch['image'] == ''){
+         if(isset($fetch) && $fetch['image'] == ''){
             echo '<img src="images/default-avatar.png">';
-         }else{
+         } elseif(isset($fetch)) {
             echo '<img src="uploaded_img/'.$fetch['image'].'">';
          }
          if(isset($message)){

@@ -16,12 +16,33 @@ td {
     border: 2px solid rgb(78, 57, 57);
 }
 
+.create-product-button {
+    text-align: center;
+}
+
 .create-product-button button {
-    padding: 3px;
-    outline: none;
-    background-color: aliceblue;
-    border-radius: 16px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-size: 18px;
+    color: #531024 !important;
+    border: 2px solid #000000;
+    letter-spacing: 0px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-top: 30px;
+    background-color: transparent !important;
+    stroke: none;
+    position: relative;
+    padding: 9px;
+}
+
+.tbb {
+    color: #a45f74 !important;
+    border: 2px solid #a45f74;
+    border-radius: 15px;
+    letter-spacing: 0px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: transparent !important;
+    stroke: none;
+    position: relative;
+    padding: 7px;
+    margin: 5px;
 }

@@ -1,6 +1,6 @@
 <?php
 include 'includes/dbh.inc.php';
-include_once 'blocks/authheader.php';
+include_once 'blocks/header.php';
 
 $uploadDirectory = "./admin/"; // Define the directory where your product images are stored
 
@@ -26,12 +26,25 @@ if (isset($_GET['productId'])) {
         $productQuantity = $row['quantity'];
         
         // Display the product details on the page
+        // Image section
+        echo "<section class='productSection'>";
+
+        // Image section
+        echo "<section class='imageSection'>";
+        echo "<img class='productImg' src='$uploadDirectory$productImage' alt='$productName'>";
+        echo "</section>";
+
+        // Information section
+        echo "<section class='infoSection'>";
         echo "<h1>$productName</h1>";
-        echo "<img src='$productImage' alt='$productName'>";
-        echo "<p>Size: $productSize</p>";
-        echo "<p>Description: $productDescription</p>";
-        echo "<p>Price: $productPrice</p>";
-        echo "<p>Available Quantity: $productQuantity</p>";
+        echo "<p class='desc'>Description: $productDescription</p>";
+        echo "<p class='sP'>Size: $productSize</p>";
+        echo "<p class='prP'>Price: $productPrice</p>";
+        echo "<p class='sAQ'>Quantity: $productQuantity</p>";
+        echo "<a class='addtc' href='basket.php?productId=" . $row['productId'] . "'>Add to Cart</a>";
+
+        echo "</section>";
+
     } else {
         echo "Product not found.";
     }
