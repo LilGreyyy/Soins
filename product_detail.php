@@ -39,9 +39,6 @@ if (isset($_GET['productId'])) {
         echo "<h1>$productName</h1>";
         echo "<p class='desc'>Description: $productDescription</p>";
         echo "<p class='sP'>Size: $productSize</p>";
-        echo "<p class='prP'>Price: $productPrice</p>";
-        echo "<p class='sAQ'>Quantity: $productQuantity</p>";
-        echo "<a class='addtc' href='basket.php?productId=" . $row['productId'] . "'>Add to Cart</a>";
 
         echo "</section>";
 

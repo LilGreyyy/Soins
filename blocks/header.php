@@ -45,19 +45,22 @@ if (isset($_GET['logout'])) {
                     <nav class="header-nav">
                         <ul class="nav__list" role="navigation">
                             <li class="list-item">
-                                <a href="/index.php" class="nav__link">Home</a>
+                                <a href="/index.php" class="nav__link">Mājaslapa</a>
                             </li>
                             <li class="list-item">
-                                <a href="/profile.php" class="nav__link">Profile</a>
+                                <a href="/profile.php" class="nav__link">Profils</a>
                             </li>
                             <li class="list-item">
-                                <a href="/store.php" class="nav__link">Store</a>
+                                <a href="/store.php" class="nav__link">Produkti</a>
                             </li>
                             <li class="list-item">
-                                <a href="/consultation.php" class="nav__link">Consultations</a>
+                                <a href="/consultation.php" class="nav__link">Konsultācijas</a>
                             </li>
                             <li class="list-item">
-                                <a href="/aboutus.php" class="nav__link">About Us</a>
+                                <a href="/aboutus.php" class="nav__link">Par mums</a>
+                            </li>
+                            <li class="list-item">
+                                <a href="/masters.php" class="nav__link">Masteri</a>
                             </li>
                             <?php if ($showLogin): ?>
                                 <li class="list-item">

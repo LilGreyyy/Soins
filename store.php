@@ -28,7 +28,6 @@ $result = mysqli_query($conn, $sql);
                 // Check if 'image_path' exists in the $row array
                 echo "<p>" . $row['size'] . "</p>";
                 echo "<p>Price: $" . $row['price'] . "</p>";
-                echo "<a class='addtc' href='basket.php?productId=" . $row['productId'] . "'>Add to Cart</a>";
                 echo "</div>";
             echo "</div>";
         }
