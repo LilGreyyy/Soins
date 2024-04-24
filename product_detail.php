@@ -26,7 +26,7 @@ if (isset($_GET['productId'])) {
         $productQuantity = $row['quantity'];
         
         // Display the product details on the page
-        // Image section
+        // Image sectionn
         echo "<section class='productSection'>";
 
         // Image section

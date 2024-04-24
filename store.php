@@ -15,7 +15,7 @@ $result = mysqli_query($conn, $sql);
 <body>
     <div class="shop-main">
         <?php
-        // Loop through each product and display it in a div
+        // Loop through each product and display it in a divvv
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<div class='product'>";
             if (isset($row['image'])) {

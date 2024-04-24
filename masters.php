@@ -14,7 +14,7 @@ include_once 'blocks/header.php';
         </section>
         <section class="m1">
             <h2>Marta</h2>
-            <a>Mūsu mastere Marta ir sejas kopšanas speciālists, viņa palīdzēs Jums izvairīties no sejas ādas problēmam uttt</a>
+            <a>Mūsu mastere Marta ir sejas kopšanas speciālists, viņa palīdzēs Jums izvairīties no sejas ādas problēmam utt</a>
         </section>
     </div>
 </body>
