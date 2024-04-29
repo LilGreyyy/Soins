@@ -53,3 +53,14 @@ if (isset($_GET['productId'])) {
 $conn->close();
 ?>
 <link rel="stylesheet" type="text/css" href="css/productdetail.css">
+<h2>Submit a Review</h2>
+    <form action="submit_review.php" method="post">
+        <input type="hidden" name="productId" value="1"> <!-- Assuming productId is 1 for the product being reviewed -->
+        <label for="reviewer_name">Your Name:</label><br>
+        <input type="text" id="reviewer_name" name="reviewer_name"><br>
+        <label for="review_text">Your Review:</label><br>
+        <textarea id="review_text" name="review_text"></textarea><br>
+        <label for="rating">Rating (1-5):</label><br>
+        <input type="number" id="rating" name="rating" min="1" max="5"><br>
+        <input type="submit" value="Submit Review">
+    </form>
