@@ -60,7 +60,7 @@ if (isset($_GET['logout'])) {
                                 <a href="/aboutus.php" class="nav__link">Par mums</a>
                             </li>
                             <li class="list-item">
-                                <a href="/masters.php" class="nav__link">Masteri</a>
+                                <a href="/masters.php" class="nav__link">Meistari</a>
                             </li>
                             <?php if ($showLogin): ?>
                                 <li class="list-item">

@@ -1,0 +1,99 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f5eaea;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+.pcontainer {
+    max-width: 100%;
+    margin-left: 100px;
+    float: left;
+    overflow: hidden;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: space-around; /* Align content to the left */
+}
+
+.profile {
+    text-align: center;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #b59494; /* Pastel pink background */
+    border: 2px solid #8b6c7c; /* Border color */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the profile box */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for a better look */
+}
+
+.profile img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.profile h3 {
+    margin: 10px 0;
+    color: #000000;
+}
+
+.profile p {
+    margin: 5px 0;
+    color: #333;
+}
+
+.btn, .delete-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    color: #ccb5b5;
+    background: #4e3742;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover, .delete-btn:hover {
+    background: #4e3742;
+}
+
+.delete-btn {
+    margin-top: 20px; /* Add extra margin to position delete button below others */
+}
+
+.consultations-container {
+    max-width: 650px; /* maximum width */
+    background-color: #b59494; /* Pastel grey background */
+    padding: 20px; /* padding inside the container */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    box-sizing: border-box; /* include padding in the element's total width and height */
+}
+
+.consultations-container h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333; /* Text color */
+    text-align: center; /* Center the heading */
+}
+
+.consultations-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.consultations-container th,
+.consultations-container td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #b89797;
+    border-collapse: collapse;
+}
+
+.consultations-container th {
+    background-color: #d0abab;
+}

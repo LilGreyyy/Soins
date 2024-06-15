@@ -5,7 +5,7 @@ include_once 'blocks/header.php';
 $uploadDirectory = "./admin/"; // Define the directory where your product images are stored
 
 // Retrieve products from the database
-$sql = "SELECT productId, name, size, description, price, quantity, image FROM products";
+$sql = "SELECT productId, name, size, description, price, image FROM products";
 $result = mysqli_query($conn, $sql);
 
 ?>
@@ -15,13 +15,13 @@ $result = mysqli_query($conn, $sql);
 <body>
     <div class="shop-main">
         <?php
-        // Loop through each product and display it in a divvv
+        // Loop through each product and display it in a div
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<div class='product'>";
             if (isset($row['image'])) {
                 echo "<img src='" . $uploadDirectory . '/' . $row['image'] . "' alt='Product Image' width='250'>";
             } else {
-                echo "Image not available"; // Handle the case when 'image' is not set
+                echo "Bilde nav pieejama"; // Handle the case when 'image' is not set
             }            
                 echo "<div class='productTxt'>";
                 echo "<h3><a href='product_detail.php?productId=" . $row['productId'] . "'>" . $row['name'] . "</a></h3>";

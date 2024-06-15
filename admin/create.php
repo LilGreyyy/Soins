@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $size = $_POST["size"];
   $description = $_POST["description"];
   $price = $_POST["price"];
-  $quantity = $_POST["quantity"];
 
   // Handle file upload
   $imagePath = uploadImage(); // Function to upload the image and return its path
@@ -18,11 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $price = convertPriceToFloat($price);
 
     // Insert the product into the database with the image path
-    $sql = "INSERT INTO products (name, size, description, price, quantity, image) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO products (name, size, description, price, image) VALUES (?, ?, ?, ?, ?, ?)";
 
     if ($stmt = mysqli_prepare($conn, $sql)) {
       // Bind the parameters
-      mysqli_stmt_bind_param($stmt, "ssssds", $name, $size, $description, $price, $quantity, $imagePath);
+      mysqli_stmt_bind_param($stmt, "ssssds", $name, $size, $description, $price, $imagePath);
 
       // Execute the statement
       if (mysqli_stmt_execute($stmt)) {
@@ -90,9 +89,6 @@ function uploadImage() {
 
   <label for="price">Price:</label>
   <input type="text" name="price" required><br>
-
-  <label for="quantity">Quantity:</label>
-  <input type="number" name="quantity" required><br>
 
   <input type="submit" value="Create Product">
 </form>

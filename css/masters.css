@@ -1,13 +1,52 @@
-.body {
-    width: 100%;
+/* masters.css */
+
+body {
+    margin: 0;
+    padding: 0;
 }
 
 .aboutmasters {
-    float: left;
-    padding: 50px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+}
+
+.aboutmasters a {
+    font-size: 20px;
+    color: #333;
 }
 
 .m1 {
-    float: left;
-    padding: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.master {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+}
+
+.master img {
+    width: 100%;
+    max-height: 300px; /* Устанавливаем максимальную высоту для фотографии */
+    object-fit: cover; /* Масштабируем изображение до его размера */
+    border-radius: 10px;
+}
+
+.master h2 {
+    margin-top: 10px;
+    color: #333;
+}
+
+.master p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #666;
 }

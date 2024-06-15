@@ -1,6 +1,6 @@
-<?php
-include_once 'blocks/header.php';
-?>
+<!DOCTYPE html>
+<html lang="ru">
+<?php include_once 'blocks/header.php'; ?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +10,43 @@ include_once 'blocks/header.php';
 <body>
     <div>
         <section class="aboutmasters">
-            <a>Mūsu masteriem ir pieredze vairāk par 5 gadiem!</a>
+            <a></a>
         </section>
         <section class="m1">
-            <h2>Marta</h2>
-            <a>Mūsu mastere Marta ir sejas kopšanas speciālists, viņa palīdzēs Jums izvairīties no sejas ādas problēmam utt</a>
+            <?php
+            // Вывод информации о мастерах
+            include 'includes/dbh.inc.php';
+            $sql = "SELECT m.masterId, m.mFullName, m.mPhoto, c.categoryName, m.workTimeOpen, m.workTimeClose
+                    FROM masters AS m
+                    INNER JOIN categories_masters AS cm ON m.masterId = cm.masterId
+                    INNER JOIN categories AS c ON cm.categoryId = c.categoryId
+                    GROUP BY m.masterId
+                    ORDER BY m.mFullName";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $mFullName = $row['mFullName'];
+                    $mPhoto = $row['mPhoto'];
+                    $categoryName = $row['categoryName'];
+                    $workTimeOpen = $row['workTimeOpen'];
+                    $workTimeClose = $row['workTimeClose'];
+
+                    $imagePath = "../admin/masteruploads/" . basename($mPhoto);
+
+                    echo "<div class='master'>
+                            <img src='$imagePath' alt='$mFullName'>
+                            <h2>$mFullName</h2>
+                            <p>$categoryName</p>
+                            <p>Work Time: $workTimeOpen-$workTimeClose</p>
+                          </div>";
+                }
+            } else {
+                echo "No masters found.";
+            }
+            $conn->close();
+            ?>
         </section>
     </div>
 </body>
+</html>

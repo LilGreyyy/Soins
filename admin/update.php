@@ -31,8 +31,6 @@ if (mysqli_num_rows($result) > 0) {
   <textarea name="product_description"><?php echo htmlspecialchars($row['description']); ?></textarea>
   <label for="product_price">Product Price:</label>
   <input type="text" name="product_price" value="<?php echo htmlspecialchars($row['price']); ?>">
-  <label for="product_quantity">Product Quantity:</label>
-  <input type="number" name="product_quantity" value="<?php echo htmlspecialchars($row['quantity']); ?>">
   <label for="product_image">Product Image:</label>
   <input type="file" name="product_image">
   <input type="submit" value="Update" name="update_product">
@@ -48,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_product"])) {
     $product_size = $_POST["product_size"];
     $product_description = $_POST["product_description"];
     $product_price = validateAndConvertPrice($_POST["product_price"]);
-    $product_quantity = $_POST["product_quantity"];
 
     // Handle image upload only if a file was selected
     if (!empty($_FILES["product_image"]["name"])) {
@@ -67,9 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_product"])) {
       }
     } 
     // Update the product information in the database, including the image file path
-    $sql = "UPDATE `products` SET `name` = ?, `size` = ?, `description` = ?, `price` = ?, `quantity` = ?, `image` = ? WHERE `productId` = ?";
+    $sql = "UPDATE `products` SET `name` = ?, `size` = ?, `description` = ?, `price` = ?, `image` = ? WHERE `productId` = ?";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sssdisi", $product_name, $product_size, $product_description, $product_price, $product_quantity, $product_image, $product_id);
+    mysqli_stmt_bind_param($stmt, "sssdisi", $product_name, $product_size, $product_description, $product_price, $product_image, $product_id);
 
     if (mysqli_stmt_execute($stmt)) {
       echo "Product updated successfully.";

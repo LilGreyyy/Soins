@@ -44,13 +44,19 @@ if (isset($_GET['logout'])) {
                     <nav class="header-nav">
                         <ul class="nav__list" role="navigation">
                             <li class="list-item">
-                                <a href="admin.php" class="nav__link">Home</a>
+                                <a href="admin.php" class="nav__link">Mājaslapa</a>
                             </li>
                             <li class="list-item">
-                                <a href="/admin/storeupdate.php" class="nav__link">Store</a>
+                                <a href="/admin/storeupdate.php" class="nav__link">Produkti</a>
                             </li>
                             <li class="list-item">
-                                <a href="/admin/adminconsultation.php" class="nav__link">Consultations</a>
+                                <a href="/admin/adminconsultation.php" class="nav__link">Konsultācijas</a>
+                            </li>
+                            <li class="list-item">
+                                <a href="/admin/adminmasters.php" class="nav__link">Meistari</a>
+                            </li>
+                            <li class="list-item">
+                                <a href="/admin/admincategories.php" class="nav__link">Meistaru kategorijas</a>
                             </li>
                             <?php if ($showLogin): ?>
                                 <li class="list-item">
@@ -62,7 +68,7 @@ if (isset($_GET['logout'])) {
                             <?php endif; ?>
                             <?php if ($showLogout): ?>
                                 <li class="list-item">
-                                    <a href="?logout" class="nav__link">Logout</a>
+                                    <a href="?logout" class="nav__link">Iziet</a>
                                 </li>
                             <?php endif; ?>
                         </ul>
