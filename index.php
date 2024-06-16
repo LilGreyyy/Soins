@@ -32,12 +32,12 @@ include_once 'blocks/header.php';
                 <a href="/consultation.php" class="cons-button">Lasīt vairāk</a>
             </div> 
         </section>
-        <section class="mContent" id="mmC">
+        <!--<section class="mContent" id="mmC">
             <div class="mText">
                 <h2>Masteri</h2>
                 <p class="smth4">Mūsu speciālisti obligāti jums palīdzēs!</p>
                 <a href="/masters.php" class="cons-button">Lasīt vairāk</a>
             </div> 
-        </section>
+        </section>-->
 </body>
 <script src="/js/home.js"></script>  
