@@ -56,6 +56,9 @@ if (isset($_GET['logout'])) {
                                 <a href="/admin/adminmasters.php" class="nav__link">Meistari</a>
                             </li>
                             <li class="list-item">
+                                <a href="/admin/users.php" class="nav__link">Lietotāji</a>
+                            </li>
+                            <li class="list-item">
                                 <a href="/admin/admincategories.php" class="nav__link">Meistaru kategorijas</a>
                             </li>
                             <?php if ($showLogin): ?>

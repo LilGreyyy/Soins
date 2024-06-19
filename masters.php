@@ -16,12 +16,14 @@
             <?php
             // Вывод информации о мастерах
             include 'includes/dbh.inc.php';
-            $sql = "SELECT m.masterId, m.mFullName, m.mPhoto, c.categoryName, m.workTimeOpen, m.workTimeClose
-                    FROM masters AS m
-                    INNER JOIN categories_masters AS cm ON m.masterId = cm.masterId
-                    INNER JOIN categories AS c ON cm.categoryId = c.categoryId
-                    GROUP BY m.masterId
-                    ORDER BY m.mFullName";
+            $sql = "SELECT m.masterId, m.mFullName, m.mPhoto, c.categoryName, 
+            DATE_FORMAT(m.workTimeOpen, '%H:%i') AS workTimeOpen, 
+            DATE_FORMAT(m.workTimeClose, '%H:%i') AS workTimeClose
+            FROM masters AS m
+            INNER JOIN categories_masters AS cm ON m.masterId = cm.masterId
+            INNER JOIN categories AS c ON cm.categoryId = c.categoryId
+            GROUP BY m.masterId
+            ORDER BY m.mFullName";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -38,7 +40,7 @@
                             <img src='$imagePath' alt='$mFullName'>
                             <h2>$mFullName</h2>
                             <p>$categoryName</p>
-                            <p>Work Time: $workTimeOpen-$workTimeClose</p>
+                            <p>Darba laiks: $workTimeOpen-$workTimeClose</p>
                           </div>";
                 }
             } else {

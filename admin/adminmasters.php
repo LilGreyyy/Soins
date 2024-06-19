@@ -9,10 +9,13 @@ $categoryListQuery = "SELECT * FROM categories";
 $categoryListResult = $conn->query($categoryListQuery);
 
 // Iegūstam meistaru sarakstu no datu bāzes
-$masterListQuery = "SELECT masters.masterId, masters.mFullName, categories.categoryName, masters.workTimeOpen, masters.workTimeClose 
+$masterListQuery = "SELECT masters.masterId, masters.mFullName, categories.categoryName, 
+                    TIME_FORMAT(masters.workTimeOpen, '%H:%i') AS workTimeOpen, 
+                    TIME_FORMAT(masters.workTimeClose, '%H:%i') AS workTimeClose
                     FROM masters 
                     INNER JOIN categories_masters ON masters.masterId = categories_masters.masterId
-                    INNER JOIN categories ON categories_masters.categoryId = categories.categoryId";
+                    INNER JOIN categories ON categories_masters.categoryId = categories.categoryId
+                    ORDER BY categories.categoryName";
 $masterListResult = $conn->query($masterListQuery);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_delete'])) {
@@ -40,96 +43,176 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_delete'])) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['confirm_delete'])) {
     // Jaunās meistara pievienošanas apstrāde
-    $mFullName = $_POST['mFullName'];
-    $categoryName = $_POST['category']; // Pārņemam izvēlēto kategoriju
-    $workTimeOpen = $_POST['workTimeOpen'];
-    $workTimeClose = $_POST['workTimeClose'];
-    $mEmail = $_POST['mEmail'];
-    $mPassword = trim($_POST['mPassword']);
+    if(isset($_POST['add_master'])) {
+        $mFullName = $_POST['mFullName'];
+        $categoryName = $_POST['category']; // Pārņemam izvēlēto kategoriju
+        $workTimeOpen = $_POST['workTimeOpen'];
+        $workTimeClose = $_POST['workTimeClose'];
+        $mEmail = $_POST['mEmail'];
+        $mPassword = trim($_POST['mPassword']);
 
-    // Paroles hash iegūšana
-    $hashed_password = password_hash($mPassword, PASSWORD_DEFAULT);
-        
-    // Attēla augšupielādes apstrāde
-    $targetDir = dirname(__FILE__) . "/masteruploads/"; // Pielāgots mērķa katalogs
-    $targetFile = $targetDir . basename($_FILES["photo"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        
-    // Pārbauda, vai augšupielādētais fails ir attēls
-    $check = getimagesize($_FILES["photo"]["tmp_name"]);
-    if($check !== false) {
-        $uploadOk = 1;
-    } else {
-        $errorMessage = "Fails nav attēls.";
-        $uploadOk = 0;
-    }
-        
-    // Pārbauda, vai fails jau eksistē
-    if (file_exists($targetFile)) {
-        $errorMessage = "Atvainojiet, fails jau eksistē.";
-        $uploadOk = 0;
-    }
-        
-    // Pārbauda attēla izmēru
-    if ($_FILES["photo"]["size"] > 500000) {
-        $errorMessage = "Atvainojiet, jūsu fails ir pārāk liels.";
-        $uploadOk = 0;
-    }
-        
-    // Atļautie attēla formāti
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    && $imageFileType != "gif" && $imageFileType != "jfif") {
-        $errorMessage = "Atvainojiet, atļauti tikai JPG, JPEG, PNG, GIF un JFIF faili.";
-        $uploadOk = 0;
-    }
-        
-    // Pārbauda, vai $uploadOk nav iestatīts uz 0 kā kļūda
-    if ($uploadOk == 0) {
-        $errorMessage = "Atvainojiet, jūsu fails netika augšupielādēts.";
-    } else {
-        // ja viss kārtībā, mēģiniet augšupielādēt failu
-        if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-            // Fails veiksmīgi augšupielādēts, tagad iegūstam kategorijas ID no tabulas 'categories'
-                
-            // Pārbauda, vai kategorija pastāv
-            $catQuery = "SELECT categoryId FROM categories WHERE categoryName = ?";
-            $stmt = $conn->prepare($catQuery);
-            $stmt->bind_param("s", $categoryName);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        // Paroles hash iegūšana
+        $hashed_password = password_hash($mPassword, PASSWORD_DEFAULT);
             
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $categoryId = $row["categoryId"];
+        // Attēla augšupielādes apstrāde
+        $targetDir = dirname(__FILE__) . "/masteruploads/"; // Pielāgots mērķa katalogs
+        $targetFile = $targetDir . basename($_FILES["photo"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+            
+        // Pārbauda, vai augšupielādētais fails ir attēls
+        $check = getimagesize($_FILES["photo"]["tmp_name"]);
+        if($check !== false) {
+            $uploadOk = 1;
+        } else {
+            $errorMessage = "Fails nav attēls.";
+            $uploadOk = 0;
+        }
+            
+        // Pārbauda, vai fails jau eksistē
+        if (file_exists($targetFile)) {
+            $errorMessage = "Atvainojiet, fails jau eksistē.";
+            $uploadOk = 0;
+        }
+            
+        // Pārbauda attēla izmēru
+        if ($_FILES["photo"]["size"] > 500000) {
+            $errorMessage = "Atvainojiet, jūsu fails ir pārāk liels.";
+            $uploadOk = 0;
+        }
+            
+        // Atļautie attēla formāti
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" && $imageFileType != "jfif") {
+            $errorMessage = "Atvainojiet, atļauti tikai JPG, JPEG, PNG, GIF un JFIF faili.";
+            $uploadOk = 0;
+        }
+            
+        // Pārbauda, vai $uploadOk nav iestatīts uz 0 kā kļūda
+        if ($uploadOk == 0) {
+            $errorMessage = "Atvainojiet, jūsu fails netika augšupielādēts.";
+        } else {
+            // ja viss kārtībā, mēģiniet augšupielādēt failu
+            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                // Fails veiksmīgi augšupielādēts, tagad iegūstam kategorijas ID no tabulas 'categories'
+                    
+                // Pārbauda, vai kategorija pastāv
+                $catQuery = "SELECT categoryId FROM categories WHERE categoryName = ?";
+                $stmt = $conn->prepare($catQuery);
+                $stmt->bind_param("s", $categoryName);
+                $stmt->execute();
+                $result = $stmt->get_result();
                 
-                // Kategorijas ID ir iegūts, tagad ievietojam datus tabulā 'masters'
-                $query = "INSERT INTO masters (mFullName, mPhoto, workTimeOpen, workTimeClose, mEmail, mPassword, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $conn->prepare($query);
-                $type = 2; // Здесь вносим значение 2 для поля type
-                $stmt->bind_param("ssssssi", $mFullName, $targetFile, $workTimeOpen, $workTimeClose, $mEmail, $hashed_password, $type);
-                
-                if ($stmt->execute()) {
-                    $masterId = $conn->insert_id;
-                    // Tagad pievienojam meistara ID tabulā 'categories_masters'
-                    $insertQuery = "INSERT INTO categories_masters (categoryId, masterId) VALUES (?, ?)";
-                    $stmt = $conn->prepare($insertQuery);
-                    $stmt->bind_param("ii", $categoryId, $masterId);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $categoryId = $row["categoryId"];
+                    
+                    // Kategorijas ID ir iegūts, tagad ievietojam datus tabulā 'masters'
+                    $query = "INSERT INTO masters (mFullName, mPhoto, workTimeOpen, workTimeClose, mEmail, mPassword, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = $conn->prepare($query);
+                    $type = 2; // Здесь вносим значение 2 для поля type
+                    $stmt->bind_param("ssssssi", $mFullName, $targetFile, $workTimeOpen, $workTimeClose, $mEmail, $hashed_password, $type);
+                    
                     if ($stmt->execute()) {
-                        $successMessage = "Jaunais meistars veiksmīgi pievienots";
+                        $masterId = $conn->insert_id;
+                        // Tagad pievienojam meistara ID tabulā 'categories_masters'
+                        $insertQuery = "INSERT INTO categories_masters (categoryId, masterId) VALUES (?, ?)";
+                        $stmt = $conn->prepare($insertQuery);
+                        $stmt->bind_param("ii", $categoryId, $masterId);
+                        if ($stmt->execute()) {
+                            $successMessage = "Jaunais meistars veiksmīgi pievienots";
+                        } else {
+                            $errorMessage = "Kļūda: " . $insertQuery . "<br>" . $conn->error;
+                        }
                     } else {
-                        $errorMessage = "Kļūda: " . $insertQuery . "<br>" . $conn->error;
+                        $errorMessage = "Kļūda: " . $query . "<br>" . $conn->error;
                     }
                 } else {
-                    $errorMessage = "Kļūda: " . $query . "<br>" . $conn->error;
+                    $errorMessage = "Izvēlētā kategorija nav atrasta datu bāzē.";
                 }
+
+                $stmt->close();
             } else {
-                $errorMessage = "Izvēlētā kategorija nav atrasta datu bāzē.";
+                $errorMessage = "Atvainojiet, radās kļūda, augšupielādējot jūsu failu.";
+            }
+        }
+    } elseif(isset($_POST['edit_master'])) {
+        // Rediģēšanas apstrāde, saņemam datus no formas
+        $masterId = $_POST['master_id'];
+        $mFullName = $_POST['mFullName'];
+        $categoryName = $_POST['category']; // Pārņemam izvēlēto kategoriju
+        $workTimeOpen = $_POST['workTimeOpen'];
+        $workTimeClose = $_POST['workTimeClose'];
+        $mEmail = $_POST['mEmail'];
+        $mPassword = trim($_POST['mPassword']);
+
+        // Paroles hash iegūšana
+        $hashed_password = password_hash($mPassword, PASSWORD_DEFAULT);
+
+        // Attēla augšupielādes apstrāde (ja nepieciešams)
+        if ($_FILES["photo"]["size"] > 0) {
+            $targetDir = dirname(__FILE__) . "/masteruploads/"; // Pielāgots mērķa katalogs
+            $targetFile = $targetDir . basename($_FILES["photo"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+            // Pārbauda, vai augšupielādētais fails ir attēls
+            $check = getimagesize($_FILES["photo"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $errorMessage = "Fails nav attēls.";
+                $uploadOk = 0;
             }
 
-            $stmt->close();
+            // Pārbauda, vai fails jau eksistē
+            if (file_exists($targetFile)) {
+                $errorMessage = "Atvainojiet, fails jau eksistē.";
+                $uploadOk = 0;
+            }
+
+            // Pārbauda attēla izmēru
+            if ($_FILES["photo"]["size"] > 500000) {
+                $errorMessage = "Atvainojiet, jūsu fails ir pārāk liels.";
+                $uploadOk = 0;
+            }
+
+            // Atļautie attēla formāti
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" && $imageFileType != "jfif") {
+                $errorMessage = "Atvainojiet, atļauti tikai JPG, JPEG, PNG, GIF un JFIF faili.";
+                $uploadOk = 0;
+            }
+
+            // Pārbauda, vai $uploadOk nav iestatīts uz 0 kā kļūda
+            if ($uploadOk == 0) {
+                $errorMessage = "Atvainojiet, jūsu fails netika augšupielādēts.";
+            } else {
+                // ja viss kārtībā, mēģiniet augšupielādēt failu
+                if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                    // Attēls veiksmīgi augšupielādēts
+                    $mPhoto = $targetFile;
+                } else {
+                    $errorMessage = "Atvainojiet, radās kļūda, augšupielādējot jūsu failu.";
+                }
+            }
+        }
+
+        // Pārbauda, vai $mPhoto definēts, ja nē, tad nevajag mainīt bildi, citādi - atjaunot arī bildi
+        if (!isset($mPhoto)) {
+            $updateMasterQuery = "UPDATE masters SET mFullName=?, workTimeOpen=?, workTimeClose=?, mEmail=?, mPassword=? WHERE masterId=?";
+            $stmt = $conn->prepare($updateMasterQuery);
+            $stmt->bind_param("sssssi", $mFullName, $workTimeOpen, $workTimeClose, $mEmail, $hashed_password, $masterId);
         } else {
-            $errorMessage = "Atvainojiet, radās kļūda, augšupielādējot jūsu failu.";
+            $updateMasterQuery = "UPDATE masters SET mFullName=?, mPhoto=?, workTimeOpen=?, workTimeClose=?, mEmail=?, mPassword=? WHERE masterId=?";
+            $stmt = $conn->prepare($updateMasterQuery);
+            $stmt->bind_param("ssssssi", $mFullName, $mPhoto, $workTimeOpen, $workTimeClose, $mEmail, $hashed_password, $masterId);
+        }
+
+        if ($stmt->execute()) {
+            $successMessage = "Meistara informācija veiksmīgi atjaunota.";
+        } else {
+            $errorMessage = "Kļūda, atjauninot meistara informāciju: " . $stmt->error;
         }
     }
 }
@@ -151,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['confirm_delete'])) {
 <body>
     <div class="container">
         <!-- Forma, lai pievienotu jaunu meistaru -->
-        <div class="mmcontainer">
+        <div class="mсcontainer">
             <h2>Pievienot jaunu meistaru</h2>
             <?php if (!empty($errorMessage)) : ?>
                 <div class="error"><?php echo $errorMessage; ?></div>
@@ -190,7 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['confirm_delete'])) {
                 <label for="mPassword">Parole:</label>
                 <input type="password" id="mPassword" name="mPassword" required><br><br>
                 
-                <button type="submit">Pievienot meistaru</button>
+                <button type="submit" name="add_master">Pievienot meistaru</button>
             </form>
         </div>
         <!-- Tabula ar esošajiem meistariem -->
@@ -198,7 +281,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['confirm_delete'])) {
             <h2>Esošie meistari</h2>
             <table>
                 <tr>
-                    <th>ID</th>
                     <th>Pilnais vārds</th>
                     <th>Kategorija</th>
                     <th>Darba laiks</th>
@@ -208,11 +290,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['confirm_delete'])) {
                 if ($masterListResult->num_rows > 0) {
                     while($row = $masterListResult->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>".$row["masterId"]."</td>";
                         echo "<td>".$row["mFullName"]."</td>";
                         echo "<td>".$row["categoryName"]."</td>";
-                        echo "<td>".$row["workTimeOpen"]. " - " . $row["workTimeClose"]."</td>";
+                        echo "<td>".$row["workTimeOpen"]. " - " . $row["workTimeClose"]."</td>"; // Adjusted display of time
                         echo "<td>
+                            <form action='edit_master.php' method='post'>
+                                <input type='hidden' name='master_id' value='".$row["masterId"]."'>
+                                <button type='submit'>Rediģēt</button>
+                            </form>
                             <form action='adminmasters.php' method='post' onsubmit='return confirmDelete();'>
                                 <input type='hidden' name='master_id' value='".$row["masterId"]."'>
                                 <input type='hidden' name='confirm_delete' value='yes'>
@@ -220,7 +305,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['confirm_delete'])) {
                             </form>
                         </td>";
                         echo "</tr>";
-                    }
+                    }                    
                 }
                 ?>
             </table>

@@ -17,6 +17,14 @@ chmod($uploadDirectory, 0755);
 $sql = "SELECT productId, name, size, description, price, image FROM products";
 $result = mysqli_query($conn, $sql);
 
+?>
+
+<!-- Add a "Create Product" button -->
+<div class="create-product-button">
+  <button onclick="window.location.href='create.php'">Create Product</button>
+</div>
+
+<?php
 // Checking for results
 if (mysqli_num_rows($result) > 0) {
   // Data output from table HTML
@@ -51,11 +59,6 @@ if (mysqli_num_rows($result) > 0) {
 // Closing the database connection
 mysqli_close($conn);
 ?>
-
-<!-- Add a "Create Product" button -->
-<div class="create-product-button">
-  <button onclick="window.location.href='create.php'">Create Product</button>
-</div>
 
 <link href="css/storeupdate.css" rel="stylesheet">
 

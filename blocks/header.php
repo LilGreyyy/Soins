@@ -21,6 +21,8 @@ if (isset($_GET['logout'])) {
     exit();
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,12 +35,11 @@ if (isset($_GET['logout'])) {
         <header class="site-header">
             <div class="header__content--flow">
                 <section class="header-content-left">
-                <a href="#" class="brand-logo">
-                    <img src="/images/chrome_Vz98ykiybM.png" width="120" height="50">
+                    <a href="#" class="brand-logo">
+                        <img src="/images/chrome_Vz98ykiybM.png" width="120" height="50">
                     </a>
                     <button class="nav-toggle">
-                        <span class="toggle--icon">
-                        </span>
+                        <span class="toggle--icon"></span>
                     </button>
                 </section>
                 <section class="header-content-right">
@@ -101,3 +102,4 @@ if (isset($_GET['logout'])) {
         }
     });
 </script>
+</html>

@@ -66,7 +66,7 @@ body, html {
 }
 
 .consultations-container {
-    max-width: 650px; /* maximum width */
+    max-width: 700px; /* maximum width */
     background-color: #b59494; /* Pastel grey background */
     padding: 20px; /* padding inside the container */
     border-radius: 10px; /* Rounded corners */

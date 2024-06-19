@@ -24,8 +24,120 @@ header {
     margin: 0 20px;
 }
 
-.mmcontainer, .mccontainer {
-    max-width: 330px;
+.mmcontainer {
+    max-width: 580px; /* Adjust width as needed */
+    margin: 50px auto; /* Center the container horizontally */
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ccc; /* Border around the container */
+    border-top-color: #af4c81; /* Top border color */
+    border-bottom-color: #af4c81; /* Bottom border color */
+}
+
+.mmcontainer > * {
+    margin-bottom: 15px; /* Spacing between elements inside mmcontainer */
+}
+
+.mmcontainer h2 {
+    margin-top: 0;
+    text-align: center;
+    color: #af4c81; /* Title color */
+}
+
+.mmcontainer form {
+    margin-top: 20px;
+}
+
+.mmcontainer label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.mmcontainer input[type="text"],
+.mmcontainer input[type="file"] {
+    width: calc(100% - 16px); /* Adjusted width to accommodate padding */
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.mmcontainer button[type="submit"] {
+    background-color: #af4c81;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    float: right; /* Align button to the right */
+}
+
+.mmcontainer button[type="submit"]:hover {
+    background-color: #894861;
+}
+
+.mmcontainer table {
+    width: 100%; /* Ensure table expands to container width */
+    border-collapse: collapse; /* Remove default table cell spacing */
+}
+
+.mmcontainer th, .mmcontainer td {
+    padding: 8px; /* Add padding for cell content */
+    text-align: left; /* Align text to the left */
+    border-bottom: 1px solid #ddd; /* Add bottom border for table cells */
+    border-right: 1px solid #ddd; /* Add right border for table cells */
+}
+
+.mmcontainer td:last-child {
+    margin-right: 15px; /* Right margin for last column cells */
+}
+
+.mmcontainer th {
+    background-color: #f2f2f2; /* Header background color */
+    color: #333; /* Header text color */
+}
+
+.mmcontainer td {
+    background-color: #fff; /* Cell background color */
+}
+
+.mmcontainer td:last-child, .mmcontainer th:last-child {
+    border-right: none; /* Remove right border for last column */
+}
+
+.mmcontainer form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mmcontainer form button {
+    margin-right: 10px;
+}
+
+.error {
+    color: rgb(35, 24, 24);
+    margin-top: 5px;
+    background-color: #f8d7da; /* Error message background color */
+    padding: 10px;
+    border: 1px solid #f5c6cb; /* Error message border color */
+    border-radius: 3px;
+}
+
+.success {
+    color: #155724;
+    margin-top: 5px;
+    background-color: #d4edda; /* Success message background color */
+    padding: 10px;
+    border: 1px solid #c3e6cb; /* Success message border color */
+    border-radius: 3px;
+}
+
+.mсcontainer {
+    max-width: 350px;
     margin: 50px;
     padding: 20px;
     border: 1px solid #ccc;

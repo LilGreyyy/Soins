@@ -62,11 +62,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_product"])) {
         echo "Error moving the uploaded file.";
         exit;
       }
-    } 
+    } else {
+      $product_image = NULL; // Set to NULL if no new image is uploaded
+    }
+
     // Update the product information in the database, including the image file path
     $sql = "UPDATE `products` SET `name` = ?, `size` = ?, `description` = ?, `price` = ?, `image` = ? WHERE `productId` = ?";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sssdisi", $product_name, $product_size, $product_description, $product_price, $product_image, $product_id);
+    mysqli_stmt_bind_param($stmt, "sssdsi", $product_name, $product_size, $product_description, $product_price, $product_image, $product_id);
 
     if (mysqli_stmt_execute($stmt)) {
       echo "Product updated successfully.";

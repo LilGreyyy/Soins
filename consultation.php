@@ -167,7 +167,8 @@ $conn->close();
         window.onload = function() {
             disablePastDatesAndTimes();
             generateTimeOptions();
-            setInterval(fetchBookedTimes, 5400000); // обновление каждые 90 минут (5400000 миллисекунд)
+            document.getElementById("cons_date").addEventListener("change", fetchBookedTimes);
+            document.getElementById("masterName").addEventListener("change", fetchBookedTimes);
         }
     </script>
 </head>
@@ -185,7 +186,7 @@ $conn->close();
     <form action="consultation.php" method="post">
         <h2>Pieraksts uz konsultāciju</h2>
         <label for="cons_date">Konsultācijas datums</label>
-        <input type="date" id="cons_date" name="cons_date" onchange="fetchBookedTimes()" required><br><br>
+        <input type="date" id="cons_date" name="cons_date" required><br><br>
         
         <label for="cons_time">Konsultācijas laiks</label>
         <select id="cons_time" name="cons_time" required>
@@ -210,7 +211,7 @@ $conn->close();
         </select><br><br>
         
         <label for="masterName">Meistars:</label>
-        <select id="masterName" name="masterName" onchange="fetchBookedTimes()" required>
+        <select id="masterName" name="masterName" required>
             <option value="">Meistars</option>
         </select><br><br>
         

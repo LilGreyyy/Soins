@@ -14,8 +14,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['date'], $_POST['maste
         while ($stmt->fetch()) {
             $bookedTimes[] = $cons_time;
         }
-        echo json_encode($bookedTimes);
         $stmt->close();
+
+        // Generate additional booked times based on the 90-minute rule
+        $extendedBookedTimes = [];
+        foreach ($bookedTimes as $time) {
+            $extendedBookedTimes[] = $time;
+            $timeObject = DateTime::createFromFormat('H:i', $time);
+            for ($i = 1; $i <= 3; $i++) {
+                $timeObject->modify('+30 minutes');
+                $extendedBookedTimes[] = $timeObject->format('H:i');
+            }
+            $timeObject = DateTime::createFromFormat('H:i', $time);
+            for ($i = 1; $i <= 3; $i++) {
+                $timeObject->modify('-30 minutes');
+                $extendedBookedTimes[] = $timeObject->format('H:i');
+            }
+        }
+
+        echo json_encode(array_unique($extendedBookedTimes));
     } else {
         echo json_encode([]);
     }

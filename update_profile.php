@@ -99,27 +99,27 @@ if (isset($_POST['update_profile'])) {
       ?>
       <div class="flex">
          <div class="inputBox">
-            <span>Username :</span>
+            <span>Vārds:</span>
             <input type="text" name="update_name" value="<?php echo htmlspecialchars($fetch['name']); ?>" class="box">
-            <span>Email :</span>
+            <span>E-pasts:</span>
             <input type="email" name="update_email" value="<?php echo htmlspecialchars($fetch['email']); ?>" class="box">
-            <span>Phone Number :</span> <!-- Add this line -->
+            <span>Telefona numurs:</span> <!-- Add this line -->
             <input type="text" name="update_number" value="<?php echo htmlspecialchars($fetch['number']); ?>" class="box"> <!-- Add this line -->
-            <span>Update your pic :</span>
+            <span>Bilde:</span>
             <input type="file" name="update_image" accept="image/jpg, image/jpeg, image/png" class="box">
          </div>
          <div class="inputBox">
-            <span>Old password :</span>
-            <input type="password" name="update_pass" placeholder="Previous password" class="box">
-            <span>New password :</span>
-            <input type="password" name="new_pass" placeholder="New password" class="box">
-            <span>Confirm password :</span>
-            <input type="password" name="confirm_pass" placeholder="Confirm new password" class="box">
+            <span>Vecā parole:</span>
+            <input type="password" name="update_pass" placeholder="Vecā parole" class="box">
+            <span>Jaunā parole:</span>
+            <input type="password" name="new_pass" placeholder="Jaunā parole" class="box">
+            <span>Atkārtot jauno paroli:</span>
+            <input type="password" name="confirm_pass" placeholder="Jaunā parole" class="box">
          </div>
       </div>
       <div class="btn-container">
-         <input type="submit" value="Update profile" name="update_profile" class="btn">
-         <a href="profile.php" class="delete-btn">Go back</a>
+         <input type="submit" value="Veikt izmaiņas" name="update_profile" class="btn">
+         <a href="profile.php" class="delete-btn">Atpakaļ</a>
       </div>
    </form>
 </div>

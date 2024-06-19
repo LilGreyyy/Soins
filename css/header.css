@@ -99,7 +99,8 @@ body {
     cursor: pointer;
     position: fixed;
     margin-top: 10px;
-    margin-left: 70px;
+    right: 30px; /* Add right margin */
+    top: 10px; /* Adjust top margin */
 }
 
 .nav-toggle:active {
@@ -191,7 +192,7 @@ body {
         top: calc(var(--header) + var(--space-1));
         gap: var(--space-05) 0;
         position: fixed;
-        width: 10em;
+        width: 100%;
         background-color: #fff;
         border-radius: var(--bd-radius);
         border: 1px solid var(--border-clr);
@@ -200,6 +201,9 @@ body {
         box-shadow: var(--shadow);
         visibility: hidden;
         opacity: 0;
+        transition: visibility 0ms, transform 166ms ease, opacity 166ms linear;
+        z-index: 100;
+        margin: 0;
     }
     .nav__list[aria-expanded="true"] {
         visibility: visible;
@@ -210,18 +214,65 @@ body {
 }
 
 @media (max-width: 479px) {
-    .header-content--left>* {
-        scale: 0.83;
+    .nav-toggle {
+        visibility: visible;
     }
+
     .nav__list {
-        width: calc(var(--full-width) - (var(--space-1) * 2));
+        right: 0;
+        margin-inline: var(--space-1);
+        top: calc(var(--header) + var(--space-1));
+        gap: var(--space-05) 0;
+        position: fixed;
+        width: 100%; 
+        background-color: #fff;
+        border-radius: var(--bd-radius);
+        border: 1px solid var(--border-clr);
+        padding-block: 0.5rem;
+        grid-auto-flow: row;
+        box-shadow: var(--shadow);
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0ms, transform 166ms ease, opacity 166ms linear;
+        z-index: 100;
+        margin: 0;
+    }
+
+    .nav__list[aria-expanded="true"] {
+        visibility: visible;
+        transform-origin: top center;
+        opacity: 1;
     }
 }
 
-@media (max-width: 767px) {
-    /* Your tablet-specific styles here */
-    .header-content--left {
-        justify-content: space-between;
-        /* or any other necessary adjustments */
+@media (max-width: 768px) {
+    .nav-toggle {
+        visibility: visible;
+    }
+
+    .nav__list {
+        right: 0;
+        margin-inline: var(--space-1);
+        top: calc(var(--header) + var(--space-1));
+        gap: var(--space-05) 0;
+        position: fixed;
+        width: 100%; 
+        background-color: #fff;
+        border-radius: var(--bd-radius);
+        border: 1px solid var(--border-clr);
+        padding-block: 0.5rem;
+        grid-auto-flow: row;
+        box-shadow: var(--shadow);
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0ms, transform 166ms ease, opacity 166ms linear;
+        z-index: 100;
+        margin: 0;
+    }
+
+    .nav__list[aria-expanded="true"] {
+        visibility: visible;
+        transform-origin: top center;
+        opacity: 1;
     }
 }

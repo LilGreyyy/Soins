@@ -5,37 +5,42 @@ include '../includes/dbh.inc.php';
 $errorMessage = "";
 $successMessageAdd = "";
 $successMessageDelete = "";
+$categoryDeleted = false; // Mainīgais, lai noteiktu, vai kāda kategorija ir dzēsta
 
 // Iegūstam kategoriju sarakstu no datu bāzes
 $categoryListQuery = "SELECT categoryId, categoryName FROM categories";
 $categoryListResult = $conn->query($categoryListQuery);
 
+if (!$categoryListResult) {
+    die("Vaicājuma izpilde neizdevās: " . $conn->error);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Jaunās kategorijas pievienošanas apstrāde
     if(isset($_POST['addCategory'])) {
-        $newCategoryName = $_POST['newCategory'];
+        $newCategoryName = $conn->real_escape_string($_POST['newCategory']);
         $addCategoryQuery = "INSERT INTO categories (categoryName) VALUES ('$newCategoryName')";
         
         if ($conn->query($addCategoryQuery) === TRUE) {
             $successMessageAdd = "Jauna kategorija veiksmīgi pievienota";
         } else {
-            $errorMessage = "Kļūda, pievienojot jaunu kategoriju: " . $addCategoryQuery . "<br>" . $conn->error;
+            $errorMessage = "Kļūda, pievienojot jaunu kategoriju: " . $conn->error;
         }
     }
 
     // Dzēšam kategoriju
     if(isset($_POST['deleteCategory'])) {
-        $categoryId = $_POST['categoryId'];
-        // Проверяем, связана ли категория с каким-либо мастером
-        $checkMasterQuery = "SELECT * FROM masters WHERE categoryId=$categoryId";
+        $categoryId = $conn->real_escape_string($_POST['categoryId']);
+        // Pārbaudām, vai kategorija nav saistīta ar kādu meistaru caur categories_masters tabulu
+        $checkMasterQuery = "SELECT * FROM categories_masters WHERE categoryId='$categoryId'";
         $checkMasterResult = $conn->query($checkMasterQuery);
         
-        if ($checkMasterResult->num_rows > 0) {
-            $errorMessage = "Невозможно удалить категорию, так как она связана с мастером.";
+        if ($checkMasterResult && $checkMasterResult->num_rows > 0) {
+            $errorMessage = "Nevar izdzēst kategoriju, jo tā ir saistīta ar meistaru.";
         } else {
             $confirmDelete = isset($_POST['confirmDelete']) ? $_POST['confirmDelete'] : '';
             if ($confirmDelete === 'yes') {
-                $deleteCategoryQuery = "DELETE FROM categories WHERE categoryId=$categoryId";
+                $deleteCategoryQuery = "DELETE FROM categories WHERE categoryId='$categoryId'";
                 
                 if ($conn->query($deleteCategoryQuery) === TRUE) {
                     // Iegūstam maksimālo kategorijas ID
@@ -49,8 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $conn->query($resetIdsQuery);
 
                     $successMessageDelete = "Kategorija veiksmīgi dzēsta";
+                    $categoryDeleted = true; // Uzstādām, ka kāda kategorija ir dzēsta
                 } else {
-                    $errorMessage = "Kļūda, dzēšot kategoriju: " . $deleteCategoryQuery . "<br>" . $conn->error;
+                    $errorMessage = "Kļūda, dzēšot kategoriju: " . $conn->error;
                 }
             } else {
                 $errorMessage = "Dzēšanas darbība atcelta!";
@@ -66,16 +72,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pievienot kategoriju</title>
-    <link rel="stylesheet" href="css/adminmasters.css">
+    <link rel="stylesheet" href="css/admincategories.css">
 </head>
 <body>
     <div class="container">
         <!-- Forma, lai pievienotu jaunu kategoriju -->
         <div class="mccontainer">
             <h2>Pievienot kategoriju</h2>
-            <?php if (!empty($errorMessage) && empty($successMessageAdd)) : ?>
-                <div class="error"><?php echo $errorMessage; ?></div>
-            <?php endif; ?>
             <?php if (!empty($successMessageAdd)) : ?>
                 <div class="success"><?php echo $successMessageAdd; ?></div>
             <?php endif; ?>
@@ -93,17 +96,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php if (!empty($errorMessage) && empty($successMessageDelete)) : ?>
                 <div class="error"><?php echo $errorMessage; ?></div>
             <?php endif; ?>
-            <?php if (!empty($successMessageDelete)) : ?>
-                <div class="success"><?php echo $successMessageDelete; ?></div>
-            <?php endif; ?>
             <ul>
                 <?php 
                 while($row = $categoryListResult->fetch_assoc()) {
-                    echo "<li>" . $row["categoryName"] . " <form action='admincategories.php' method='post' onsubmit='return confirmDelete()'><input type='hidden' name='categoryId' value='" . $row["categoryId"] . "'><input type='hidden' name='deleteCategory' value='true'><button type='submit'>Dzēst</button></form>";
-                    if (!empty($successMessageDelete) && isset($_POST['deleteCategory']) && $_POST['categoryId'] == $row["categoryId"]) {
-                        echo "<span class='success'>" . $successMessageDelete . "</span>";
+                    echo "<li>" . $row["categoryName"];
+                    if (!$categoryDeleted || ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_POST['deleteCategory']))) { // Parādīt dzēšanas pogu, ja kategorija nav dzēsta
+                        echo " <form action='admincategories.php' method='post' onsubmit='return confirmDelete()'><input type='hidden' name='categoryId' value='" . $row["categoryId"] . "'><input type='hidden' name='deleteCategory' value='true'><input type='hidden' name='confirmDelete' value='yes'><button type='submit'>Dzēst</button></form>";
                     }
                     echo "</li>";
+                    if (!empty($successMessageDelete) && isset($_POST['deleteCategory']) && $_POST['categoryId'] == $row["categoryId"]) {
+                        echo "<div class='success'>" . $successMessageDelete . "</div>"; // Parādīt ziņojumu par dzēšanu, ja tas attiecas uz šo kategoriju
+                    }
                 }
                 ?>
             </ul>
